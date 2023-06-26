@@ -1,9 +1,7 @@
-# flutter-beginners-tutorial
-All course files for the Flutter Beginners playlist on The Net Ninja YouTube channel.
+# World Time App, Completed
+Forked from The Net Ninja's Flutter Beginners GitHub repo. 
 
-## How to use these files
-Each lesson in the playlist has it's own branch in this repository. To see the code for that lesson, choose the appropriate branch. E.g. to see the code for lesson 15, checkout the lesson-15 branch.
+The goal of this app is to complete the world time app that The Net Ninja made at the end of his playlist. By complete I mean adding all countries and their flags, and making sure it functions on all devices.
 
-**important** - if you are cloning the repo to your desktop, you will need to perform a packages get / pub get to install any dependencies that the project may have at that point of the course.
-
-**Link to playlist on YouTube**
+Link to The Net Ninja's GitHub repo: https://github.com/iamshaunjp/flutter-beginners-tutorial <br>
+Link to The Net Ninja's playlist: https://www.youtube.com/playlist?list=PL4cUxeGkcC9jLYyp2Aoh6hcWuxFDX6PBJ
