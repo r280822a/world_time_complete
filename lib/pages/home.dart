@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:world_time/services/world_time.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -38,15 +39,22 @@ class _HomeState extends State<Home> {
                 // Edit location button
                 TextButton.icon(
                   onPressed: () async {
-                    dynamic result = await Navigator.pushNamed(context, "/location");
-                    setState(() {
-                      data = {
-                        "time": result["time"],
-                        "location": result["location"],
-                        "isDay": result["isDay"],
-                        "flag": result["flag"],
-                      };
+                    List<String> allLocations = await getAllLocationsURL();
+                    List<String> allCodes = await getAllLocationCodes(allLocations);
+                    getAllLocationsFlag(allCodes);
+                    dynamic result = await Navigator.pushNamed(context, "/location", arguments: {
+
                     });
+                    if (result != null){
+                      setState(() {
+                        data = {
+                          "time": result["time"],
+                          "location": result["location"],
+                          "isDay": result["isDay"],
+                          "flag": result["flag"],
+                        };
+                      });
+                    }
                   }, 
                   icon: const Icon(Icons.edit_location), 
                   label: const Text("Edit location"),
