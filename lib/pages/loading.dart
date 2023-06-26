@@ -11,6 +11,7 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
   void setupWorldTime() async {
+    // Load Berlin by default
     WorldTime instance = WorldTime(location: "Berlin", flag: "germany.png", url: "Europe/Berlin");
     await instance.getTime();
     if (mounted) {
@@ -26,12 +27,14 @@ class _LoadingState extends State<Loading> {
   @override
   void initState() {
     super.initState();
+    // Only ever runs once, when first initalising screen
     setupWorldTime();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Loading screen with fading cube
       backgroundColor: Colors.blue[900],
       body: const Center(
         child: SpinKitFadingCube(

@@ -24,7 +24,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
     WorldTime instance = locations[index];
     await instance.getTime();
     
-    // navigate to homescreen
+    // Navigate to homescreen
     if (mounted) {
       Navigator.pop(context, {
         "location": instance.location,
@@ -45,6 +45,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
         elevation: 0,
       ),
       
+      // Cards for each location
       body: ListView.builder(
         itemCount: locations.length,
         itemBuilder: ((context, index) {

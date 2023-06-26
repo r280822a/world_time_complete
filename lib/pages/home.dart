@@ -8,13 +8,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Map data = {};
+  Map data = {}; // Map for a given location
 
   @override
   Widget build(BuildContext context) {
+    // If empty, recieve map from loading screen
     data = data.isNotEmpty ? data : ModalRoute.of(context)!.settings.arguments as Map;
 
-    // set background
+    // Set background
     String bgImage = data["isDay"] ? "day.png" : "night.png";
     Color? bgColor = data["isDay"] ? Colors.blue : Colors.indigo[700];
     
@@ -22,16 +23,19 @@ class _HomeState extends State<Home> {
       backgroundColor: bgColor,
       body: SafeArea(
         child: Container(
+          // Background Image
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/$bgImage"),
               fit: BoxFit.cover,
             ),
           ),
+          
           child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 120, 0, 0),
             child: Column(
               children: [
+                // Edit location button
                 TextButton.icon(
                   onPressed: () async {
                     dynamic result = await Navigator.pushNamed(context, "/location");
@@ -50,6 +54,7 @@ class _HomeState extends State<Home> {
                 ),
                 const SizedBox(height: 20),
           
+                // Location name + time
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
