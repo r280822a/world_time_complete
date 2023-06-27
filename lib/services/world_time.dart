@@ -33,21 +33,23 @@ class WorldTime {
   }
 }
 
-Map<String, List<WorldTime>> getAllContenants(List<WorldTime> allLocations) {
-  Map<String, List<WorldTime>> allContenants = {};
+Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allLocations) {
+  // Returns map with continents and timezones in each continent
+  Map<String, List<WorldTime>> allContinents = {};
   
+  // Form a key for each continent in allLocations
   for (int i = 0; i < allLocations.length; i++) {
     List<String> split = allLocations[i].url.split("/");
-    allContenants[split[0]] = [];
+    allContinents[split[0]] = [];
   }
 
+  // Add timezones to each continent
   for (int i = 0; i < allLocations.length; i++) {
     List<String> split = allLocations[i].url.split("/");
-    allContenants[split[0]]!.add(allLocations[i]);
+    allContinents[split[0]]!.add(allLocations[i]);
   }
 
-  print(allContenants);
-  return allContenants;
+  return allContinents;
 }
 
 Future<List<WorldTime>> getAllLocations() async {

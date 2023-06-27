@@ -9,17 +9,6 @@ class ChooseLocation extends StatefulWidget {
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
-  // List<WorldTime> locations = [
-  //   WorldTime(url: 'Europe/London', location: 'London', flag: 'uk.png'),
-  //   WorldTime(url: 'Europe/Athens', location: 'Athens', flag: 'greece.png'),
-  //   WorldTime(url: 'Africa/Cairo', location: 'Cairo', flag: 'egypt.png'),
-  //   WorldTime(url: 'Africa/Nairobi', location: 'Nairobi', flag: 'kenya.png'),
-  //   WorldTime(url: 'America/Chicago', location: 'Chicago', flag: 'usa.png'),
-  //   WorldTime(url: 'America/New_York', location: 'New York', flag: 'usa.png'),
-  //   WorldTime(url: 'Asia/Seoul', location: 'Seoul', flag: 'south_korea.png'),
-  //   WorldTime(url: 'Asia/Jakarta', location: 'Jakarta', flag: 'indonesia.png'),
-  // ];
-
   List<WorldTime> locations = [];
 
   void updateTime(index) async {
@@ -37,33 +26,38 @@ class _ChooseLocationState extends State<ChooseLocation> {
     }
   }
 
+  List<Widget> buildExpandableContent(String continent, Map<String, List<WorldTime>> allLocationContinents) {
+    // To build what goes inside the ExpansionTile
+    List<Widget> timezonesInContinent = [];
+
+    for (int i = 0; i < allLocationContinents[continent]!.length; i++) {
+      // Add a ListTile for each timezone in the given continent
+      List<WorldTime> location = allLocationContinents[continent]!;
+      timezonesInContinent.add(
+        ListTile(
+          onTap: () {
+            updateTime(i);
+          },
+          title: Text(location[i].location),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(location[i].flag),
+          ),
+        ),
+      );
+    }
+
+    return timezonesInContinent;
+  }
+
   @override
   Widget build(BuildContext context) {
     Map data = ModalRoute.of(context)!.settings.arguments as Map;
-    locations = data["locations"];
-    Map<String, List<WorldTime>> allLocationContenants = getAllContenants(locations);
-    List<String> allContenants = allLocationContenants.keys.toList();
-    
-    buildExpandableContent(String contenant) {
-      List<Widget> columnContent = [];
+    locations = data["locations"]; // List of timezones
 
-      for (int i = 0; i < allLocationContenants[contenant]!.length; i++) {
-        List<WorldTime> location = allLocationContenants[contenant]!;
-        columnContent.add(
-          ListTile(
-            onTap: () {
-              updateTime(i);
-            },
-            title: Text(location[i].location),
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(location[i].flag),
-            ),
-          ),
-        );
-      }
-
-      return columnContent;
-    }
+    // Get all continents and the timezones in each continent
+    Map<String, List<WorldTime>> allLocationContinents = getAllContinents(locations);
+    // List of just continents
+    List<String> allContinents = allLocationContinents.keys.toList();
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -73,40 +67,20 @@ class _ChooseLocationState extends State<ChooseLocation> {
         elevation: 0,
       ),
 
+      // Cards for each location
       body: ListView.builder(
-        itemCount: allContenants.length,
+        itemCount: allContinents.length,
         itemBuilder: ((context, index) {
           return ExpansionTile(
-            title: Text(allContenants[index]),
+            title: Text(allContinents[index]),
             children: <Widget>[
               Column(
-                children: buildExpandableContent(allContenants[index]),
+                children: buildExpandableContent(allContinents[index], allLocationContinents),
               ),
             ],
           );
         })
       )
-      
-      // Cards for each location
-      // body: ListView.builder(
-      //   itemCount: locations.length,
-      //   itemBuilder: ((context, index) {
-      //     return Padding(
-      //       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
-      //       child: Card(
-      //         child: ListTile(
-      //           onTap: () {
-      //             updateTime(index);
-      //           },
-      //           title: Text(locations[index].location),
-      //           leading: CircleAvatar(
-      //             backgroundImage: NetworkImage(locations[index].flag),
-      //           ),
-      //         ),
-      //       ),
-      //     );
-      //   })
-      // )
     );
   }
 }
