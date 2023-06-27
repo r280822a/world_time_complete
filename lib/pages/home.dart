@@ -39,20 +39,26 @@ class _HomeState extends State<Home> {
                 // Edit location button
                 TextButton.icon(
                   onPressed: () async {
+                    // List of all timezones
                     List<WorldTime> allLocations = await getAllLocations();
 
-                    dynamic result = await Navigator.pushNamed(context, "/location", arguments: {
-                      "locations": allLocations,
-                    });
-                    if (result != null){
-                      setState(() {
-                        data = {
-                          "time": result["time"],
-                          "location": result["location"],
-                          "isDay": result["isDay"],
-                          "flag": result["flag"],
-                        };
+                    if (mounted) {
+                      // Open choose_location screen, sending timezones, and wait for reponse
+                      dynamic result = await Navigator.pushNamed(context, "/location", arguments: {
+                        "locations": allLocations,
                       });
+
+                      // If timezone selected, change home screen location
+                      if (result != null){
+                        setState(() {
+                          data = {
+                            "time": result["time"],
+                            "location": result["location"],
+                            "isDay": result["isDay"],
+                            "flag": result["flag"],
+                          };
+                        });
+                      }
                     }
                   }, 
                   icon: const Icon(Icons.edit_location), 
