@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart'; 
@@ -12,7 +13,7 @@ class WorldTime {
   // Constructor, requiring each attribute to be explicitly named
   WorldTime({required this.location, required this.flag, required this.url});
 
-  Future<void> getTime() async {
+  Future<String> getTime() async {
     try {
       // Make request to API
       Response response = await get(Uri.parse("https://worldtimeapi.org/api/timezone/$url"));
@@ -29,7 +30,9 @@ class WorldTime {
     } catch (e) {
       print("Caught error: $e");
       time = "Could not get time data";
+      return "$e";
     }
+    return "";
   }
 }
 

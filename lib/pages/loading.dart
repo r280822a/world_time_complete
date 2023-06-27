@@ -13,8 +13,36 @@ class _LoadingState extends State<Loading> {
   void setupWorldTime() async {
     // Load Berlin by default
     WorldTime instance = WorldTime(location: "Berlin", flag: "germany.png", url: "Europe/Berlin");
-    await instance.getTime();
-    if (mounted) {
+    String timeMessage =  await instance.getTime();
+
+    if (timeMessage != ""){
+      // Create button
+      Widget okButton = TextButton(
+        child: const Text("OK"),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      );
+
+      // Create AlertDialog
+      AlertDialog alert = AlertDialog(
+        title: const Text("Make sure you're connected to the internet"),
+        content: Text(timeMessage),
+        actions: [
+          okButton,
+        ],
+      );
+      
+      if (mounted) {
+        // show the dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return alert;
+          },
+        );
+      }
+    } else if (mounted) {
       Navigator.pushReplacementNamed(context, "/home", arguments: {
         "location": instance.location,
         "flag": instance.flag,
