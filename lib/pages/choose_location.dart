@@ -41,6 +41,29 @@ class _ChooseLocationState extends State<ChooseLocation> {
   Widget build(BuildContext context) {
     Map data = ModalRoute.of(context)!.settings.arguments as Map;
     locations = data["locations"];
+    Map<String, List<WorldTime>> allLocationContenants = getAllContenants(locations);
+    List<String> allContenants = allLocationContenants.keys.toList();
+    
+    buildExpandableContent(String contenant) {
+      List<Widget> columnContent = [];
+
+      for (int i = 0; i < allLocationContenants[contenant]!.length; i++) {
+        List<WorldTime> location = allLocationContenants[contenant]!;
+        columnContent.add(
+          ListTile(
+            onTap: () {
+              updateTime(i);
+            },
+            title: Text(location[i].location),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(location[i].flag),
+            ),
+          ),
+        );
+      }
+
+      return columnContent;
+    }
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -49,27 +72,41 @@ class _ChooseLocationState extends State<ChooseLocation> {
         title: const Text("Choose a location"),
         elevation: 0,
       ),
-      
-      // Cards for each location
+
       body: ListView.builder(
-        itemCount: locations.length,
+        itemCount: allContenants.length,
         itemBuilder: ((context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
-            child: Card(
-              child: ListTile(
-                onTap: () {
-                  updateTime(index);
-                },
-                title: Text(locations[index].location),
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(locations[index].flag),
-                ),
+          return ExpansionTile(
+            title: Text(allContenants[index]),
+            children: <Widget>[
+              Column(
+                children: buildExpandableContent(allContenants[index]),
               ),
-            ),
+            ],
           );
         })
       )
+      
+      // Cards for each location
+      // body: ListView.builder(
+      //   itemCount: locations.length,
+      //   itemBuilder: ((context, index) {
+      //     return Padding(
+      //       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 4),
+      //       child: Card(
+      //         child: ListTile(
+      //           onTap: () {
+      //             updateTime(index);
+      //           },
+      //           title: Text(locations[index].location),
+      //           leading: CircleAvatar(
+      //             backgroundImage: NetworkImage(locations[index].flag),
+      //           ),
+      //         ),
+      //       ),
+      //     );
+      //   })
+      // )
     );
   }
 }

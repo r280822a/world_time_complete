@@ -33,7 +33,22 @@ class WorldTime {
   }
 }
 
+Map<String, List<WorldTime>> getAllContenants(List<WorldTime> allLocations) {
+  Map<String, List<WorldTime>> allContenants = {};
+  
+  for (int i = 0; i < allLocations.length; i++) {
+    List<String> split = allLocations[i].url.split("/");
+    allContenants[split[0]] = [];
+  }
 
+  for (int i = 0; i < allLocations.length; i++) {
+    List<String> split = allLocations[i].url.split("/");
+    allContenants[split[0]]!.add(allLocations[i]);
+  }
+
+  print(allContenants);
+  return allContenants;
+}
 
 Future<List<WorldTime>> getAllLocations() async {
   // Return list, of type WorldTime, of all timezones
@@ -41,7 +56,7 @@ Future<List<WorldTime>> getAllLocations() async {
   // Get all URLs and Flags
   List<String> allURLs = await getAllLocationURLs();
   List<String> allCodes = await getAllLocationCodes(allURLs);
-  List<String> allFlags = await getAllLocationFlags(allCodes);
+  List<String> allFlags = getAllLocationFlags(allCodes);
 
   List<WorldTime> allLocations = [];
   for (int i = 0; i < allURLs.length; i++) {
@@ -123,7 +138,7 @@ Future<List<String>> getAllLocationCodes(List<String> allLocations) async {
   return [];
 }
 
-Future<List<String>> getAllLocationFlags(List<String> allCodes) async {
+List<String> getAllLocationFlags(List<String> allCodes) {
   // Returns list of all flag URLs, for each country code
   List<String> allFlags = [];
   for (int i = 0; i < allCodes.length; i++) {
