@@ -39,11 +39,10 @@ class _HomeState extends State<Home> {
                 // Edit location button
                 TextButton.icon(
                   onPressed: () async {
-                    List<String> allLocations = await getAllLocationsURL();
-                    List<String> allCodes = await getAllLocationCodes(allLocations);
-                    getAllLocationsFlag(allCodes);
-                    dynamic result = await Navigator.pushNamed(context, "/location", arguments: {
+                    List<WorldTime> allLocations = await getAllLocations();
 
+                    dynamic result = await Navigator.pushNamed(context, "/location", arguments: {
+                      "locations": allLocations,
                     });
                     if (result != null){
                       setState(() {

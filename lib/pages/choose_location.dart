@@ -37,6 +37,9 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   @override
   Widget build(BuildContext context) {
+    Map data = ModalRoute.of(context)!.settings.arguments as Map;
+    locations = data["locations"];
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -58,7 +61,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
                 },
                 title: Text(locations[index].location),
                 leading: CircleAvatar(
-                  backgroundImage: AssetImage("assets/${locations[index].flag}"),
+                  backgroundImage: NetworkImage(locations[index].flag),
                 ),
               ),
             ),
