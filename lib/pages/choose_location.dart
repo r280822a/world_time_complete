@@ -11,8 +11,8 @@ class ChooseLocation extends StatefulWidget {
 class _ChooseLocationState extends State<ChooseLocation> {
   List<WorldTime> locations = [];
 
-  void updateTime(index) async {
-    WorldTime instance = locations[index];
+  void updateTime(WorldTime instance) async {
+    // WorldTime instance = locations[index];
     await instance.getTime();
     
     // Navigate to homescreen
@@ -32,15 +32,15 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
     for (int i = 0; i < allLocationContinents[continent]!.length; i++) {
       // Add a ListTile for each timezone in the given continent
-      List<WorldTime> location = allLocationContinents[continent]!;
+      List<WorldTime> timezone = allLocationContinents[continent]!;
       timezonesInContinent.add(
         ListTile(
           onTap: () {
-            updateTime(i);
+            updateTime(timezone[i]);
           },
-          title: Text(location[i].location),
+          title: Text(timezone[i].location),
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(location[i].flag),
+            backgroundImage: NetworkImage(timezone[i].flag),
           ),
         ),
       );
