@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:world_time/services/world_time.dart';
+import 'dart:async';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -10,6 +11,26 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Map data = {}; // Map for a given location
+  // late Timer _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    Timer.periodic(const Duration(seconds: 30), (timer) => _update());
+  }
+
+  void _update() {
+    data["instance"].getTime();
+    setState(() {
+      data = {
+        "instance": data["instance"],
+        "time": data["instance"].time,
+        "location": data["location"],
+        "isDay": data["isDay"],
+        "flag": data["flag"],
+      };
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +73,7 @@ class _HomeState extends State<Home> {
                       if (result != null){
                         setState(() {
                           data = {
+                            "instance": result["instance"],
                             "time": result["time"],
                             "location": result["location"],
                             "isDay": result["isDay"],

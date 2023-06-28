@@ -44,6 +44,7 @@ class _LoadingState extends State<Loading> {
       }
     } else if (mounted) {
       Navigator.pushReplacementNamed(context, "/home", arguments: {
+        "instance": instance,
         "location": instance.location,
         "flag": instance.flag,
         "time": instance.time,
