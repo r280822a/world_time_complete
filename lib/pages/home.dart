@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(seconds: 10), (timer) => _update());
+    Timer.periodic(const Duration(seconds: 1), (timer) => _update());
   }
 
   void _update() async {
