@@ -8,6 +8,7 @@ The goal of this app is to complete the world time app that The Net Ninja made a
 - Appropriate flags for each timezone
 - Timezones categorized into continents
 - Time updates every 30 seconds
+- Shows local timezone at first on home screen
 
 ## TODO
 - Only send offset, so you only call API once then internally update time every couple of seconds
