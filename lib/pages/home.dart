@@ -22,7 +22,6 @@ class _HomeState extends State<Home> {
   }
 
   void _update() async {
-    data["instance"].getTime();
     await data["instance"].getOffset();
 
     DateTime dateTime = DateTime.now();
@@ -32,10 +31,8 @@ class _HomeState extends State<Home> {
     setState(() {
       data = {
         "instance": data["instance"],
-        "time": data["instance"].time,
         "location": data["location"],
         "isDay": data["isDay"],
-        "flag": data["flag"],
       };
     });
   }
@@ -47,7 +44,6 @@ class _HomeState extends State<Home> {
       data = ModalRoute.of(context)!.settings.arguments as Map;
       _update();
     }
-    // data = data.isNotEmpty ? data : ModalRoute.of(context)!.settings.arguments as Map;
 
     // Set background
     String bgImage = data["isDay"] ? "day.png" : "night.png";

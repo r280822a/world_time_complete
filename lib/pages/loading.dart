@@ -11,44 +11,13 @@ class Loading extends StatefulWidget {
 
 class _LoadingState extends State<Loading> {
   void setupWorldTime() async {
-    // Load Berlin by default
-    // WorldTime instance = WorldTime(location: "Berlin", flag: "germany.png", url: "Europe/Berlin");
+    // Load local time by default
     WorldTime instance = await getCurrentTimeZone();
-    String timeMessage = await instance.getTime();
-
-    if (timeMessage != ""){
-      // Create button
-      Widget okButton = TextButton(
-        child: const Text("OK"),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      );
-
-      // Create AlertDialog
-      AlertDialog alert = AlertDialog(
-        title: const Text("Make sure you're connected to the internet"),
-        content: Text(timeMessage),
-        actions: [
-          okButton,
-        ],
-      );
-      
-      if (mounted) {
-        // show the dialog
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return alert;
-          },
-        );
-      }
-    } else if (mounted) {
+    
+    if (mounted) {
       Navigator.pushReplacementNamed(context, "/home", arguments: {
         "instance": instance,
         "location": instance.location,
-        "flag": instance.flag,
-        "time": instance.time,
         "isDay": instance.isDay,
       });
     }

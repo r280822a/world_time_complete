@@ -12,16 +12,11 @@ class _ChooseLocationState extends State<ChooseLocation> {
   List<WorldTime> locations = [];
 
   void updateTime(WorldTime instance) async {
-    // WorldTime instance = locations[index];
-    await instance.getTime();
-    
     // Navigate to homescreen
     if (mounted) {
       Navigator.pop(context, {
         "instance": instance,
         "location": instance.location,
-        "flag": instance.flag,
-        "time": instance.time,
         "isDay": instance.isDay,
       });
     }
