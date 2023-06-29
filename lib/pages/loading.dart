@@ -14,7 +14,7 @@ class _LoadingState extends State<Loading> {
     // Load Berlin by default
     // WorldTime instance = WorldTime(location: "Berlin", flag: "germany.png", url: "Europe/Berlin");
     WorldTime instance = await getCurrentTimeZone();
-    String timeMessage =  await instance.getTime();
+    String timeMessage = await instance.getTime();
 
     if (timeMessage != ""){
       // Create button

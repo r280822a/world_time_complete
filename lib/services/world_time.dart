@@ -9,6 +9,7 @@ class WorldTime {
   String flag; // Flag URL
   String url; // URL for API endpoint
   bool isDay = true;
+  late Duration offset;
 
   // Constructor, requiring each attribute to be explicitly named
   WorldTime({required this.location, required this.flag, required this.url});
@@ -34,6 +35,47 @@ class WorldTime {
     }
     return "";
   }
+
+  Future<void> getOffset() async {
+    try {
+      // Make request to API
+      Response response = await get(Uri.parse("https://worldtimeapi.org/api/timezone/$url"));
+      Map data = jsonDecode(response.body);
+      
+      // Get utc_offset from data
+      String locOffsetStr = data["utc_offset"];
+      locOffsetStr = "2000-01-01T${locOffsetStr.substring(1, locOffsetStr.length)}";
+      DateTime locOffset = DateTime.parse(locOffsetStr);
+      
+      WorldTime currentTimeZone = await getCurrentTimeZone();
+      Response currentResponse = await get(Uri.parse("https://worldtimeapi.org/api/timezone/${currentTimeZone.url}"));
+      Map currentData = jsonDecode(currentResponse.body);
+
+      // Get currentOffsetSec from data
+      String currentOffsetStr = currentData["utc_offset"];
+      currentOffsetStr = "2000-01-01T${currentOffsetStr.substring(1, currentOffsetStr.length)}";
+      DateTime currentOffset = DateTime.parse(currentOffsetStr);
+
+      offset = locOffset.difference(currentOffset);
+    } catch(e) {
+      print("Caught error: $e");
+    }
+  }
+}
+
+Duration parseDuration(String s) {
+  int hours = 0;
+  int minutes = 0;
+  int micros;
+  List<String> parts = s.split(':');
+  if (parts.length > 2) {
+    hours = int.parse(parts[parts.length - 3]);
+  }
+  if (parts.length > 1) {
+    minutes = int.parse(parts[parts.length - 2]);
+  }
+  micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
+  return Duration(hours: hours, minutes: minutes, microseconds: micros);
 }
 
 Future<WorldTime> getCurrentTimeZone() async {

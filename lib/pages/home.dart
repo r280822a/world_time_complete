@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:world_time/services/world_time.dart';
 import 'dart:async';
+import 'package:intl/intl.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -12,15 +13,22 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Map data = {}; // Map for a given location
   // late Timer _timer;
+  String time = "";
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(seconds: 30), (timer) => _update());
+    Timer.periodic(const Duration(seconds: 10), (timer) => _update());
   }
 
-  void _update() {
+  void _update() async {
     data["instance"].getTime();
+    await data["instance"].getOffset();
+
+    DateTime dateTime = DateTime.now();
+    dateTime = dateTime.add(data["instance"].offset);
+    time = DateFormat.jm().format(dateTime);
+
     setState(() {
       data = {
         "instance": data["instance"],
@@ -35,7 +43,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // If empty, recieve map from loading screen
-    data = data.isNotEmpty ? data : ModalRoute.of(context)!.settings.arguments as Map;
+    if (data.isNotEmpty == false){
+      data = ModalRoute.of(context)!.settings.arguments as Map;
+      _update();
+    }
+    // data = data.isNotEmpty ? data : ModalRoute.of(context)!.settings.arguments as Map;
 
     // Set background
     String bgImage = data["isDay"] ? "day.png" : "night.png";
@@ -106,7 +118,7 @@ class _HomeState extends State<Home> {
                 const SizedBox(height: 20),
         
                 Text(
-                  data["time"],
+                  time,
                   style: const TextStyle(fontSize: 66, color: Colors.white),
                 ),
               ],
