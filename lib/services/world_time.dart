@@ -1,6 +1,8 @@
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 
 class WorldTime {
   String location;
@@ -40,6 +42,15 @@ class WorldTime {
 
       offset = currentOffset.difference(locOffset);
     } catch(e) {
+      Fluttertoast.showToast(
+        msg: "Error: $e \n Ensure you're connected to the internet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 10,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
       print("Caught error: $e");
     }
   }
@@ -144,6 +155,15 @@ Future<List<String>> getAllLocationURLs() async {
 
     return allLocations;
   } catch (e) {
+    Fluttertoast.showToast(
+        msg: "Error: $e \n Ensure you're connected to the internet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 10,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
     print("Caught error: $e");
   }
   return ["Could not get data"];
@@ -170,6 +190,15 @@ Future<List<String>> getAllLocationCodes(List<String> allLocations) async {
 
     return allCodes;
   } catch(e) {
+    Fluttertoast.showToast(
+        msg: "Error: $e \n Ensure you're connected to the internet",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 10,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+      );
     print("Caught error: $e");
   }
   return [];

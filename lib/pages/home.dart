@@ -24,16 +24,10 @@ class _HomeState extends State<Home> {
   void _update() async {
     DateTime dateTime = DateTime.now();
     dateTime = dateTime.add(data["instance"].offset);
-    time = DateFormat.jm().format(dateTime);
-
-    data["isDay"] = (dateTime.hour > 6 && dateTime.hour < 20) ? true : false;
 
     setState(() {
-      data = {
-        "instance": data["instance"],
-        "location": data["location"],
-        "isDay": data["isDay"],
-      };
+      time = DateFormat.jm().format(dateTime);
+      data["isDay"] = (dateTime.hour > 6 && dateTime.hour < 20) ? true : false;
     });
   }
 
