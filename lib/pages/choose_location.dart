@@ -12,6 +12,8 @@ class _ChooseLocationState extends State<ChooseLocation> {
   List<WorldTime> locations = [];
 
   void updateTime(WorldTime instance) async {
+    await instance.getOffset();
+    
     // Navigate to homescreen
     if (mounted) {
       Navigator.pop(context, {

@@ -13,6 +13,7 @@ class _LoadingState extends State<Loading> {
   void setupWorldTime() async {
     // Load local time by default
     WorldTime instance = await getCurrentTimeZone();
+    instance.offset = const Duration(seconds: 0);
     
     if (mounted) {
       Navigator.pushReplacementNamed(context, "/home", arguments: {

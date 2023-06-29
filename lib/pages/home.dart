@@ -22,8 +22,6 @@ class _HomeState extends State<Home> {
   }
 
   void _update() async {
-    await data["instance"].getOffset();
-
     DateTime dateTime = DateTime.now();
     dateTime = dateTime.add(data["instance"].offset);
     time = DateFormat.jm().format(dateTime);

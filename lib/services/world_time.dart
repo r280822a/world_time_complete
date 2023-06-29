@@ -7,7 +7,7 @@ class WorldTime {
   String flag; // Flag URL
   String url; // URL for API endpoint
   bool isDay = true;
-  late Duration offset;
+  late Duration offset; // Offset from local time
 
   // Constructor, requiring each attribute to be explicitly named
   WorldTime({required this.location, required this.flag, required this.url});
