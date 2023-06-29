@@ -12,7 +12,8 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   void setupWorldTime() async {
     // Load Berlin by default
-    WorldTime instance = WorldTime(location: "Berlin", flag: "germany.png", url: "Europe/Berlin");
+    // WorldTime instance = WorldTime(location: "Berlin", flag: "germany.png", url: "Europe/Berlin");
+    WorldTime instance = await getCurrentTimeZone();
     String timeMessage =  await instance.getTime();
 
     if (timeMessage != ""){

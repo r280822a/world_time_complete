@@ -1,6 +1,7 @@
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart'; 
+import 'package:flutter_timezone/flutter_timezone.dart';
 
 class WorldTime {
   String location;
@@ -33,6 +34,14 @@ class WorldTime {
     }
     return "";
   }
+}
+
+Future<WorldTime> getCurrentTimeZone() async {
+  String url = await FlutterTimezone.getLocalTimezone();
+  List<String> split = url.split("/");
+  String location = split[split.length - 1];
+  WorldTime currentTime = WorldTime(location: location, flag: "flag", url: url); 
+  return currentTime;
 }
 
 Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allLocations) {
