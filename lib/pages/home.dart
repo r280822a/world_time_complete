@@ -26,6 +26,8 @@ class _HomeState extends State<Home> {
     dateTime = dateTime.add(data["instance"].offset);
     time = DateFormat.jm().format(dateTime);
 
+    data["isDay"] = (dateTime.hour > 6 && dateTime.hour < 20) ? true : false;
+
     setState(() {
       data = {
         "instance": data["instance"],

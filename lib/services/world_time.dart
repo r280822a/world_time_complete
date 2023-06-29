@@ -20,8 +20,11 @@ class WorldTime {
       
       // Get utc_offset from data
       String locOffsetStr = data["utc_offset"];
-      locOffsetStr = "2000-01-01T${locOffsetStr.substring(1, locOffsetStr.length)}";
-      DateTime locOffset = DateTime.parse(locOffsetStr);
+
+      String datetimeStr = data["datetime"];
+      datetimeStr = datetimeStr.substring(0, datetimeStr.length - 6);
+      datetimeStr = datetimeStr + locOffsetStr;
+      DateTime locOffset = DateTime.parse(datetimeStr);
       
       WorldTime currentTimeZone = await getCurrentTimeZone();
       Response currentResponse = await get(Uri.parse("https://worldtimeapi.org/api/timezone/${currentTimeZone.url}"));
@@ -29,10 +32,13 @@ class WorldTime {
 
       // Get currentOffsetSec from data
       String currentOffsetStr = currentData["utc_offset"];
-      currentOffsetStr = "2000-01-01T${currentOffsetStr.substring(1, currentOffsetStr.length)}";
-      DateTime currentOffset = DateTime.parse(currentOffsetStr);
 
-      offset = locOffset.difference(currentOffset);
+      String curDatetimeStr = data["datetime"];
+      curDatetimeStr = curDatetimeStr.substring(0, curDatetimeStr.length - 6);
+      curDatetimeStr = curDatetimeStr + currentOffsetStr;
+      DateTime currentOffset = DateTime.parse(curDatetimeStr);
+
+      offset = currentOffset.difference(locOffset);
     } catch(e) {
       print("Caught error: $e");
     }
