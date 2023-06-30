@@ -13,7 +13,7 @@ The goal of this app is to complete the world time app that The Net Ninja made a
 
 ## TODO
 - Fix bugs when opening the app offline
-- Toast showing error messages
+- Alert dialog showing error messages
 - Locally store timezones after first call
 - Tap time to change to 24 hour format
 - Info page, showing credits, and linking to this GitHub page
