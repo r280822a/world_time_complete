@@ -98,11 +98,15 @@ Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allLocations) {
   return allContinents;
 }
 
-Future<List<WorldTime>> getAllLocations() async {
+Future<List<WorldTime>> getAllLocations(BuildContext context) async {
   // Return list, of type WorldTime, of all timezones
 
   // Get all URLs and Flags
   List<String> allURLs = await getAllLocationURLs();
+  if (allURLs[0] == "Could not get data"){
+    showAlertDialog(context, allURLs[1]);
+    return [];
+  }
   List<String> allCodes = await getAllLocationCodes(allURLs);
   List<String> allFlags = getAllLocationFlags(allCodes);
 
@@ -123,8 +127,27 @@ Future<List<WorldTime>> getAllLocations() async {
   return allLocations;
 }
 
+showAlertDialog(BuildContext context, String error) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text("Make sure you're connected to the internet"),
+      content: Text("$error"),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text("OK"),
+        )
+      ],
+    ),
+  );
+}
+
 Future<List<String>> getAllLocationURLs() async {
   // Returns list of all URLs, for each timezone
+  Object error;
   try {
     // Make request to API
     Response response = await get(Uri.parse("https://worldtimeapi.org/api/timezones"));
@@ -155,18 +178,10 @@ Future<List<String>> getAllLocationURLs() async {
 
     return allLocations;
   } catch (e) {
-    Fluttertoast.showToast(
-        msg: "Error: $e \n Ensure you're connected to the internet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 10,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
+    error = e;
     print("Caught error: $e");
   }
-  return ["Could not get data"];
+  return ["Could not get data", "Caught error: $error"];
 }
 
 Future<List<String>> getAllLocationCodes(List<String> allLocations) async {
@@ -190,15 +205,6 @@ Future<List<String>> getAllLocationCodes(List<String> allLocations) async {
 
     return allCodes;
   } catch(e) {
-    Fluttertoast.showToast(
-        msg: "Error: $e \n Ensure you're connected to the internet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 10,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
     print("Caught error: $e");
   }
   return [];
