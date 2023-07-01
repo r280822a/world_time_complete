@@ -1,7 +1,6 @@
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 
 class WorldTime {
@@ -14,7 +13,7 @@ class WorldTime {
   // Constructor, requiring each attribute to be explicitly named
   WorldTime({required this.location, required this.flag, required this.url});
 
-  Future<void> getOffset() async {
+  Future<String> getOffset(BuildContext context) async {
     try {
       // Make request to API
       Response response = await get(Uri.parse("https://worldtimeapi.org/api/timezone/$url"));
@@ -42,17 +41,11 @@ class WorldTime {
 
       offset = currentOffset.difference(locOffset);
     } catch(e) {
-      Fluttertoast.showToast(
-        msg: "Error: $e \n Ensure you're connected to the internet",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 10,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-      );
+      showAlertDialog(context, "$e");
       print("Caught error: $e");
+      return "Could not get data";
     }
+    return "";
   }
 }
 
@@ -108,6 +101,10 @@ Future<List<WorldTime>> getAllLocations(BuildContext context) async {
     return [];
   }
   List<String> allCodes = await getAllLocationCodes(allURLs);
+  if (allCodes[0] == "Could not get data"){
+    showAlertDialog(context, allCodes[1]);
+    return [];
+  }
   List<String> allFlags = getAllLocationFlags(allCodes);
 
   List<WorldTime> allLocations = [];
@@ -181,11 +178,12 @@ Future<List<String>> getAllLocationURLs() async {
     error = e;
     print("Caught error: $e");
   }
-  return ["Could not get data", "Caught error: $error"];
+  return ["Could not get data", "$error"];
 }
 
 Future<List<String>> getAllLocationCodes(List<String> allLocations) async {
   // Returns list of all country codes, for each timezone
+  Object error;
   try {
     // Make request to API
     Response response = await get(Uri.parse("https://api.timezonedb.com/v2.1/list-time-zone?key=***REMOVED***&format=json"));
@@ -205,9 +203,10 @@ Future<List<String>> getAllLocationCodes(List<String> allLocations) async {
 
     return allCodes;
   } catch(e) {
+    error = e;
     print("Caught error: $e");
   }
-  return [];
+  return ["Could not get data", "$error"];
 }
 
 List<String> getAllLocationFlags(List<String> allCodes) {
