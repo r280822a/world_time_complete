@@ -7,13 +7,12 @@ The goal of this app is to complete the world time app that The Net Ninja made a
 - All timezones listed
 - Appropriate flags for each timezone
 - Timezones categorized into continents
-- Time updates every 30 seconds
+- Time updates every second
 - Shows local timezone at first on home screen
-- Only send offset, so you only call API once then internally update time every second
+- Alert dialog showing error messages, when offline
+- (In the code:) Only use offset, so you only call API once then internally update time every second
 
 ## TODO
-- Fix bugs when opening the app offline
-- Alert dialog showing error messages
 - Locally store timezones after first call
 - Tap time to change to 24 hour format
 - Info page, showing credits, and linking to this GitHub page
