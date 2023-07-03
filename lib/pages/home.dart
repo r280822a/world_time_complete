@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:world_time/services/world_time.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'package:world_time/services/all_locations.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -40,7 +41,7 @@ class _HomeState extends State<Home> {
 
     // Set background
     String bgImage = data["isDay"] ? "day.png" : "night.png";
-    Color? bgColor = data["isDay"] ? const Color.fromRGBO(21, 136, 200, 100) : const Color.fromRGBO(39, 39, 96, 100);
+    Color? bgColor = data["isDay"] ? const Color(0xff1288c8) : const Color(0xff282761);
 
 
     return Scaffold(
