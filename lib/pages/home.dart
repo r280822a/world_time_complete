@@ -12,7 +12,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Map data = {}; // Map for a given location
-  // late Timer _timer;
   String time = "";
 
   @override
@@ -41,7 +40,7 @@ class _HomeState extends State<Home> {
 
     // Set background
     String bgImage = data["isDay"] ? "day.png" : "night.png";
-    Color? bgColor = data["isDay"] ? Colors.blue : Colors.indigo[700];
+    Color? bgColor = data["isDay"] ? const Color.fromRGBO(21, 136, 200, 100) : const Color.fromRGBO(39, 39, 96, 100);
 
 
     return Scaffold(

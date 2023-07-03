@@ -88,12 +88,12 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
 
   // Get all URLs and Flags
   List<String> allURLs = await getAllTimezoneURLs();
-  if (allURLs[0] == "Could not get data"){
+  if (context.mounted && allURLs[0] == "Could not get data"){
     showAlertDialog(context, allURLs[1]);
     return [];
   }
   List<String> allCodes = await getAllTimezoneCodes(allURLs);
-  if (allCodes[0] == "Could not get data"){
+  if (context.mounted && allCodes[0] == "Could not get data"){
     showAlertDialog(context, allCodes[1]);
     return [];
   }
@@ -121,7 +121,7 @@ showAlertDialog(BuildContext context, String error) {
     context: context,
     builder: (context) => AlertDialog(
       title: const Text("Make sure you're connected to the internet"),
-      content: Text("$error"),
+      content: Text(error),
       actions: [
         TextButton(
           onPressed: () {
