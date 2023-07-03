@@ -14,32 +14,36 @@ class WorldTime {
   WorldTime({required this.location, required this.flag, required this.url});
 
   Future<String> getOffset(BuildContext context) async {
+    // Gets offset for wanted timezone (the timezone specified in url attribute)
     try {
-      // Make request to API
+      // Make request to API for wanted timezone
       Response response = await get(Uri.parse("https://worldtimeapi.org/api/timezone/$url"));
       Map data = jsonDecode(response.body);
-      
-      // Get utc_offset from data
-      String locOffsetStr = data["utc_offset"];
-
+      // Get current datetime at wanted timezone
       String datetimeStr = data["datetime"];
+      // Remove the offset at the end of datetime
+      // e.g. remove '+01:00' from '2023-07-03T15:51:58.519684+01:00'
       datetimeStr = datetimeStr.substring(0, datetimeStr.length - 6);
-      datetimeStr = datetimeStr + locOffsetStr;
-      DateTime locOffset = DateTime.parse(datetimeStr);
+
+      // Get offset, from wanted timezone
+      String wantedOffsetStr = data["utc_offset"];
+      // wantedDatetime is datetime + [offset at wanted timezone]
+      String wantedDatetimeStr = datetimeStr + wantedOffsetStr;
+      DateTime wantedDatetime = DateTime.parse(wantedDatetimeStr);
       
-      WorldTime currentTimeZone = await getCurrentTimeZone();
-      Response currentResponse = await get(Uri.parse("https://worldtimeapi.org/api/timezone/${currentTimeZone.url}"));
-      Map currentData = jsonDecode(currentResponse.body);
+      // Make request to API for local timezone
+      WorldTime localTimeZone = await getLocalTimeZone();
+      Response localResponse = await get(Uri.parse("https://worldtimeapi.org/api/timezone/${localTimeZone.url}"));
+      Map localData = jsonDecode(localResponse.body);
 
-      // Get currentOffsetSec from data
-      String currentOffsetStr = currentData["utc_offset"];
+      // Get offset, from local timezone
+      String localOffsetStr = localData["utc_offset"];
+      // localDatetime is datetime + [offset at local timezone]
+      String localDatetimeStr = datetimeStr + localOffsetStr;
+      DateTime localDatetime = DateTime.parse(localDatetimeStr);
 
-      String curDatetimeStr = data["datetime"];
-      curDatetimeStr = curDatetimeStr.substring(0, curDatetimeStr.length - 6);
-      curDatetimeStr = curDatetimeStr + currentOffsetStr;
-      DateTime currentOffset = DateTime.parse(curDatetimeStr);
-
-      offset = currentOffset.difference(locOffset);
+      // Offset is the difference between local timezone and wanted timezone
+      offset = localDatetime.difference(wantedDatetime);
     } catch(e) {
       showAlertDialog(context, "$e");
       print("Caught error: $e");
@@ -49,86 +53,74 @@ class WorldTime {
   }
 }
 
-Duration parseDuration(String s) {
-  int hours = 0;
-  int minutes = 0;
-  int micros;
-  List<String> parts = s.split(':');
-  if (parts.length > 2) {
-    hours = int.parse(parts[parts.length - 3]);
-  }
-  if (parts.length > 1) {
-    minutes = int.parse(parts[parts.length - 2]);
-  }
-  micros = (double.parse(parts[parts.length - 1]) * 1000000).round();
-  return Duration(hours: hours, minutes: minutes, microseconds: micros);
-}
 
-Future<WorldTime> getCurrentTimeZone() async {
+
+Future<WorldTime> getLocalTimeZone() async {
+  // Returns a WorldTime object specifying the local timezone
   String url = await FlutterTimezone.getLocalTimezone();
   List<String> split = url.split("/");
   String location = split[split.length - 1];
-  WorldTime currentTime = WorldTime(location: location, flag: "flag", url: url); 
-  return currentTime;
+  WorldTime localTimezone = WorldTime(location: location, flag: "", url: url); 
+  return localTimezone;
 }
 
-Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allLocations) {
+Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allTimezones) {
   // Returns map with continents and timezones in each continent
   Map<String, List<WorldTime>> allContinents = {};
-  
-  // Form a key for each continent in allLocations
-  for (int i = 0; i < allLocations.length; i++) {
-    List<String> split = allLocations[i].url.split("/");
+
+  // Form a key for each continent in allTimezones
+  for (int i = 0; i < allTimezones.length; i++) {
+    List<String> split = allTimezones[i].url.split("/");
     allContinents[split[0]] = [];
   }
 
   // Add timezones to each continent
-  for (int i = 0; i < allLocations.length; i++) {
-    List<String> split = allLocations[i].url.split("/");
-    allContinents[split[0]]!.add(allLocations[i]);
+  for (int i = 0; i < allTimezones.length; i++) {
+    List<String> split = allTimezones[i].url.split("/");
+    allContinents[split[0]]!.add(allTimezones[i]);
   }
 
   return allContinents;
 }
 
-Future<List<WorldTime>> getAllLocations(BuildContext context) async {
-  // Return list, of type WorldTime, of all timezones
+Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
+  // Return list of all timezones
 
   // Get all URLs and Flags
-  List<String> allURLs = await getAllLocationURLs();
+  List<String> allURLs = await getAllTimezoneURLs();
   if (allURLs[0] == "Could not get data"){
     showAlertDialog(context, allURLs[1]);
     return [];
   }
-  List<String> allCodes = await getAllLocationCodes(allURLs);
+  List<String> allCodes = await getAllTimezoneCodes(allURLs);
   if (allCodes[0] == "Could not get data"){
     showAlertDialog(context, allCodes[1]);
     return [];
   }
-  List<String> allFlags = getAllLocationFlags(allCodes);
+  List<String> allFlags = getAllTimezoneFlags(allCodes);
 
-  List<WorldTime> allLocations = [];
+  List<WorldTime> allTimezones = [];
   for (int i = 0; i < allURLs.length; i++) {
     // From URLs, get the location name
     List<String> split = allURLs[i].split("/");
     String locationName = split[split.length - 1];
     locationName = locationName.replaceAll("_", " ");
 
-    allLocations.add(WorldTime(
+    allTimezones.add(WorldTime(
       location: locationName, 
       flag: allFlags[i], 
       url: allURLs[i]
     ));
   }
 
-  return allLocations;
+  return allTimezones;
 }
 
 showAlertDialog(BuildContext context, String error) {
   showDialog(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text("Make sure you're connected to the internet"),
+      title: const Text("Make sure you're connected to the internet"),
       content: Text("$error"),
       actions: [
         TextButton(
@@ -142,8 +134,8 @@ showAlertDialog(BuildContext context, String error) {
   );
 }
 
-Future<List<String>> getAllLocationURLs() async {
-  // Returns list of all URLs, for each timezone
+Future<List<String>> getAllTimezoneURLs() async {
+  // Returns list of URLs, for each timezone
   Object error;
   try {
     // Make request to API
@@ -156,10 +148,10 @@ Future<List<String>> getAllLocationURLs() async {
     responseCleaned = responseCleaned.substring(1, responseCleaned.length - 1);
 
     // Split the cleaned response to get a list of all URLs
-    List<String> allLocations = responseCleaned.split(",");
+    List<String> allURLs = responseCleaned.split(",");
     
     // Remove all URLs that aren't countries/cities
-    List<String> notLocations = [
+    List<String> notURLs = [
       "CET", "CST6CDT", "EET", "EST", "EST5EDT",
       "Etc/GMT", "Etc/GMT+1", "Etc/GMT+10", "Etc/GMT+11", "Etc/GMT+12",
       "Etc/GMT+2", "Etc/GMT+3","Etc/GMT+4", "Etc/GMT+5", "Etc/GMT+6",
@@ -169,11 +161,11 @@ Future<List<String>> getAllLocationURLs() async {
       "Etc/GMT-8", "Etc/GMT-9", "Etc/UTC", "HST",
       "MET","MST","MST7MDT","PST8PDT", "WET"
     ];
-    for (final notLocation in notLocations) {
-      allLocations.remove(notLocation);
+    for (final notURL in notURLs) {
+      allURLs.remove(notURL);
     }
 
-    return allLocations;
+    return allURLs;
   } catch (e) {
     error = e;
     print("Caught error: $e");
@@ -181,20 +173,20 @@ Future<List<String>> getAllLocationURLs() async {
   return ["Could not get data", "$error"];
 }
 
-Future<List<String>> getAllLocationCodes(List<String> allLocations) async {
-  // Returns list of all country codes, for each timezone
+Future<List<String>> getAllTimezoneCodes(List<String> allTimezone) async {
+  // Returns list of country codes, for each timezone
   Object error;
   try {
     // Make request to API
     Response response = await get(Uri.parse("https://api.timezonedb.com/v2.1/list-time-zone?key=***REMOVED***&format=json"));
     Map data = jsonDecode(response.body);
 
-    // For each location, find the country code from reponse data
+    // For each timezone, find the country code from reponse data
     List<String> allCodes = [];
-    for (int i = 0; i < allLocations.length; i++) {
+    for (int i = 0; i < allTimezone.length; i++) {
       for (int j = 0; j < data["zones"].length; j++) {
         String zoneName = data["zones"][j]["zoneName"].replaceAll("\\", "");
-        if (zoneName == allLocations[i]){
+        if (zoneName == allTimezone[i]){
           String countryCode = data["zones"][j]["countryCode"];
           allCodes.add(countryCode.toLowerCase());
         }
@@ -209,8 +201,8 @@ Future<List<String>> getAllLocationCodes(List<String> allLocations) async {
   return ["Could not get data", "$error"];
 }
 
-List<String> getAllLocationFlags(List<String> allCodes) {
-  // Returns list of all flag URLs, for each country code
+List<String> getAllTimezoneFlags(List<String> allCodes) {
+  // Returns list of flag URLs, for each country code
   List<String> allFlags = [];
   for (int i = 0; i < allCodes.length; i++) {
     allFlags.add("https://flagcdn.com/h80/${allCodes[i]}.png");

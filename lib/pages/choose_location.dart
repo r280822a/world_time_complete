@@ -14,7 +14,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
   void updateTime(WorldTime instance) async {
     String message = await instance.getOffset(context);
     
-    // Navigate to homescreen
+    // Navigate to homescreen, if we get offset from API
     if (mounted && message != "Could not get data") {
       Navigator.pop(context, {
         "instance": instance,
@@ -26,7 +26,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   List<Widget> buildExpandableContent(String continent, Map<String, List<WorldTime>> allLocationContinents) {
     // To build what goes inside the ExpansionTile
-    List<Widget> timezonesInContinent = [];
+    List<Widget> timezonesInContinent = []; // List of timezones in a given continent
 
     for (int i = 0; i < allLocationContinents[continent]!.length; i++) {
       // Add a ListTile for each timezone in the given continent

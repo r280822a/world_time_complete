@@ -64,7 +64,7 @@ class _HomeState extends State<Home> {
                 TextButton.icon(
                   onPressed: () async {
                     // List of all timezones
-                    List<WorldTime> allLocations = await getAllLocations(context);
+                    List<WorldTime> allLocations = await getAllTimezones(context);
 
                     if (mounted && allLocations.isNotEmpty) {
                       // Open choose_location screen, sending timezones, and wait for reponse

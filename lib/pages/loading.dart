@@ -12,7 +12,7 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   void setupWorldTime() async {
     // Load local time by default
-    WorldTime instance = await getCurrentTimeZone();
+    WorldTime instance = await getLocalTimeZone();
     instance.offset = const Duration(seconds: 0);
     
     if (mounted) {
