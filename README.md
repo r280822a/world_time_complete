@@ -2,7 +2,7 @@
 Forked from The Net Ninja's Flutter Beginners GitHub repo. 
 
 The goal of this app is to complete the world time app that The Net Ninja made at the end of his playlist. By complete I mean adding all countries and their flags, as well as improving the user experience. <br/>
-This app makes use of 2 APIs: [TimeZoneDB](https://timezonedb.com/) for timezones, timestamps & countrycodes, and [Flagcdn](https://flagcdn.com/) for flag images. Both APIs are free for non-commercial use: [TimeZoneDB is under CC3](https://timezonedb.com/about), [Flagcdn is in the public domain](https://flagpedia.net/about)
+This app makes use of 2 APIs: [TimeZoneDB](https://timezonedb.com/) for timezones, timestamps & country codes, and [Flagcdn](https://flagcdn.com/) for flag images. Both APIs are free for non-commercial use: [TimeZoneDB is under CC3](https://timezonedb.com/about), [Flagcdn is in the public domain](https://flagpedia.net/about)
 
 ## Features
 - All timezones listed
