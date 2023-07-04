@@ -12,30 +12,39 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
     return allTimezones;
   }
 
-  // Get all URLs and Flags
-  List<String> allURLs = await getAllTimezoneURLs();
-  if (context.mounted && allURLs[0] == "Could not get data"){
-    showAlertDialog(context, allURLs[1]);
-    return [];
-  }
-  List<String> allCodes = await getAllTimezoneCodes(allURLs);
-  if (context.mounted && allCodes[0] == "Could not get data"){
-    showAlertDialog(context, allCodes[1]);
-    return [];
-  }
-  List<String> allFlags = getAllTimezoneFlags(allCodes);
+  try {
+    // Make request to API
+    Response response = await get(Uri.parse("https://api.timezonedb.com/v2.1/list-time-zone?key=***REMOVED***&format=json"));
+    Map data = jsonDecode(response.body);
 
-  for (int i = 0; i < allURLs.length; i++) {
-    // From URLs, get the location name
-    List<String> split = allURLs[i].split("/");
-    String locationName = split[split.length - 1];
-    locationName = locationName.replaceAll("_", " ");
+    for (int i = 0; i < data["zones"].length; i++){
+      String url = data["zones"][i]["zoneName"].replaceAll("\\", "");
+      String flag = data["zones"][i]["countryCode"].toLowerCase();
+      flag = "https://flagcdn.com/h80/$flag.png";
 
-    allTimezones.add(WorldTime(
-      location: locationName, 
-      flag: allFlags[i], 
-      url: allURLs[i]
-    ));
+      List<String> split = url.split("/");
+      String locationName = split[split.length - 1];
+      locationName = locationName.replaceAll("_", " ");
+
+      allTimezones.add(WorldTime(
+        location: locationName, 
+        flag: flag, 
+        url: url
+      ));
+
+      // Get local date time
+      WorldTime localTimeZone = await getLocalTimeZone();
+      Response localResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=***REMOVED***&format=json&by=zone&zone=${localTimeZone.url}"));
+      Map localData = jsonDecode(localResponse.body);
+      int localTimestamp = localData["timestamp"];
+      
+      int wantedTimestamp = data["zones"][i]["timestamp"];
+      allTimezones[i].getOffset(context, localTimestamp, wantedTimestamp);
+    }
+  } catch(e) {
+    showAlertDialog(context, "$e");
+    print("Caught error: $e");
+    return [];
   }
 
   return allTimezones;
@@ -119,32 +128,22 @@ Future<List<String>> getAllTimezoneURLs() async {
   return ["Could not get data", "$error"];
 }
 
-Future<List<String>> getAllTimezoneCodes(List<String> allTimezone) async {
+Future<List<String>> getAllTimezoneCodes(List<String> allTimezone, Map data) async {
   // Returns list of country codes, for each timezone
-  Object error;
-  try {
-    // Make request to API
-    Response response = await get(Uri.parse("https://api.timezonedb.com/v2.1/list-time-zone?key=***REMOVED***&format=json"));
-    Map data = jsonDecode(response.body);
-
-    // For each timezone, find the country code from reponse data
-    List<String> allCodes = [];
-    for (int i = 0; i < allTimezone.length; i++) {
-      for (int j = 0; j < data["zones"].length; j++) {
-        String zoneName = data["zones"][j]["zoneName"].replaceAll("\\", "");
-        if (zoneName == allTimezone[i]){
-          String countryCode = data["zones"][j]["countryCode"];
-          allCodes.add(countryCode.toLowerCase());
-        }
+  
+  // For each timezone, find the country code from reponse data
+  List<String> allCodes = [];
+  for (int i = 0; i < allTimezone.length; i++) {
+    for (int j = 0; j < data["zones"].length; j++) {
+      String zoneName = data["zones"][j]["zoneName"].replaceAll("\\", "");
+      if (zoneName == allTimezone[i]){
+        String countryCode = data["zones"][j]["countryCode"];
+        allCodes.add(countryCode.toLowerCase());
       }
     }
-
-    return allCodes;
-  } catch(e) {
-    error = e;
-    print("Caught error: $e");
   }
-  return ["Could not get data", "$error"];
+
+  return allCodes;
 }
 
 List<String> getAllTimezoneFlags(List<String> allCodes) {

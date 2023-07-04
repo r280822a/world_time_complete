@@ -14,37 +14,27 @@ class WorldTime {
   // Constructor, requiring each attribute to be explicitly named
   WorldTime({required this.location, required this.flag, required this.url});
 
-  Future<String> getOffset(BuildContext context) async {
+  Future<String> getOffset(BuildContext context, int localTimestamp, int wantedTimestamp) async {
     // Gets offset for wanted timezone (the timezone specified in url attribute)
     try {
-      // Make request to API for wanted timezone
-      Response response = await get(Uri.parse("https://worldtimeapi.org/api/timezone/$url"));
-      Map data = jsonDecode(response.body);
-      // Get current datetime at wanted timezone
-      String datetimeStr = data["datetime"];
-      // Remove the offset at the end of datetime
-      // e.g. remove '+01:00' from '2023-07-03T15:51:58.519684+01:00'
-      datetimeStr = datetimeStr.substring(0, datetimeStr.length - 6);
+      // Get local timezone
+      // WorldTime localTimeZone = await getLocalTimeZone();
+      // Initalise variables
+      DateTime wantedDatetime = DateTime.now();
+      DateTime localDatetime = wantedDatetime;
 
-      // Get offset, from wanted timezone
-      String wantedOffsetStr = data["utc_offset"];
-      // wantedDatetime is datetime + [offset at wanted timezone]
-      String wantedDatetimeStr = datetimeStr + wantedOffsetStr;
-      DateTime wantedDatetime = DateTime.parse(wantedDatetimeStr);
-      
-      // Make request to API for local timezone
-      WorldTime localTimeZone = await getLocalTimeZone();
-      Response localResponse = await get(Uri.parse("https://worldtimeapi.org/api/timezone/${localTimeZone.url}"));
-      Map localData = jsonDecode(localResponse.body);
+      // Get local date time
+      // Response localResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=***REMOVED***&format=json&by=zone&zone=${localTimeZone.url}"));
+      // Map localData = jsonDecode(localResponse.body);
+      localDatetime = DateTime.fromMillisecondsSinceEpoch(localTimestamp * 1000);
 
-      // Get offset, from local timezone
-      String localOffsetStr = localData["utc_offset"];
-      // localDatetime is datetime + [offset at local timezone]
-      String localDatetimeStr = datetimeStr + localOffsetStr;
-      DateTime localDatetime = DateTime.parse(localDatetimeStr);
+      // Get wanted date time
+      // Response wantedResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=***REMOVED***&format=json&by=zone&zone=$url"));
+      // Map wantedData = jsonDecode(wantedResponse.body);
+      wantedDatetime = DateTime.fromMillisecondsSinceEpoch(wantedTimestamp * 1000);
 
       // Offset is the difference between local timezone and wanted timezone
-      offset = localDatetime.difference(wantedDatetime);
+      offset = wantedDatetime.difference(localDatetime);
     } catch(e) {
       showAlertDialog(context, "$e");
       print("Caught error: $e");

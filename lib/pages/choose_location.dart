@@ -13,10 +13,10 @@ class _ChooseLocationState extends State<ChooseLocation> {
   List<WorldTime> locations = [];
 
   void updateTime(WorldTime instance) async {
-    String message = await instance.getOffset(context);
+    // String message = await instance.getOffset(context);
     
     // Navigate to homescreen, if we get offset from API
-    if (mounted && message != "Could not get data") {
+    if (mounted) {
       Navigator.pop(context, {
         "instance": instance,
         "location": instance.location,
