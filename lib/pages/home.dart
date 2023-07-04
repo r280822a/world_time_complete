@@ -34,7 +34,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     // If empty, recieve map from loading screen
-    if (data.isNotEmpty == false){
+    if (data.isEmpty){
       data = ModalRoute.of(context)!.settings.arguments as Map;
       _update();
     }
@@ -77,10 +77,8 @@ class _HomeState extends State<Home> {
                         setState(() {
                           data = {
                             "instance": result["instance"],
-                            "time": result["time"],
                             "location": result["location"],
                             "isDay": result["isDay"],
-                            "flag": result["flag"],
                           };
                         });
                       }

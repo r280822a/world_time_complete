@@ -41,6 +41,7 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
   return allTimezones;
 }
 
+
 Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allTimezones) {
   // Returns map with continents and timezones in each continent
   Map<String, List<WorldTime>> allContinents = {};
@@ -77,6 +78,7 @@ showAlertDialog(BuildContext context, String error) {
     ),
   );
 }
+
 
 Future<List<String>> getAllTimezoneURLs() async {
   // Returns list of URLs, for each timezone
