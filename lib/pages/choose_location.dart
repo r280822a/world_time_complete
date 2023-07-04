@@ -13,9 +13,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
   List<WorldTime> locations = [];
 
   void updateTime(WorldTime instance) async {
-    // String message = await instance.getOffset(context);
-    
-    // Navigate to homescreen, if we get offset from API
+    // Navigate to homescreen
     if (mounted) {
       Navigator.pop(context, {
         "instance": instance,

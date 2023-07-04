@@ -18,6 +18,12 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
     Response response = await get(Uri.parse("https://api.timezonedb.com/v2.1/list-time-zone?key=***REMOVED***&format=json"));
     Map data = jsonDecode(response.body);
 
+    // Get local date time
+    WorldTime localTimeZone = await getLocalTimeZone();
+    Response localResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=***REMOVED***&format=json&by=zone&zone=${localTimeZone.url}"));
+    Map localData = jsonDecode(localResponse.body);
+    int localTimestamp = localData["timestamp"];
+
     for (int i = 0; i < data["zones"].length; i++){
       String url = data["zones"][i]["zoneName"].replaceAll("\\", "");
       String flag = data["zones"][i]["countryCode"].toLowerCase();
@@ -33,12 +39,6 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
         url: url
       ));
 
-      // Get local date time
-      WorldTime localTimeZone = await getLocalTimeZone();
-      Response localResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=***REMOVED***&format=json&by=zone&zone=${localTimeZone.url}"));
-      Map localData = jsonDecode(localResponse.body);
-      int localTimestamp = localData["timestamp"];
-      
       int wantedTimestamp = data["zones"][i]["timestamp"];
       allTimezones[i].getOffset(context, localTimestamp, wantedTimestamp);
     }
