@@ -14,6 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   Map data = {}; // Map for a given location
   String time = "";
+  bool is24Hour = false;
 
   @override
   void initState() {
@@ -26,7 +27,11 @@ class _HomeState extends State<Home> {
     dateTime = dateTime.add(data["instance"].offset);
 
     setState(() {
-      time = DateFormat.jm().format(dateTime);
+      if (is24Hour){
+        time = DateFormat.Hm().format(dateTime);
+      } else{
+        time = DateFormat.jm().format(dateTime);
+      }
       data["isDay"] = (dateTime.hour > 6 && dateTime.hour < 20) ? true : false;
     });
   }
@@ -106,9 +111,14 @@ class _HomeState extends State<Home> {
                 ),
                 const SizedBox(height: 20),
         
-                Text(
-                  time,
-                  style: const TextStyle(fontSize: 66, color: Colors.white),
+                GestureDetector(
+                  onTap: () {
+                    is24Hour = !is24Hour;
+                  },
+                  child: Text(
+                    time,
+                    style: const TextStyle(fontSize: 66, color: Colors.white),
+                  ),
                 ),
               ],
             ),
