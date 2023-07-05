@@ -3,6 +3,7 @@ import 'package:world_time/services/world_time.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:world_time/services/all_locations.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,6 +21,14 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     Timer.periodic(const Duration(seconds: 1), (timer) => _update());
+    Fluttertoast.showToast(
+        msg: "Tap the time to change to 24 hour format, and vice versa",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.white,
+        textColor: Colors.black,
+        fontSize: 16.0
+    );
   }
 
   void _update() async {
