@@ -12,9 +12,9 @@ This app makes use of 2 APIs: [TimeZoneDB](https://timezonedb.com/) for timezone
 - Shows local timezone at first, on home screen
 - Alert dialog showing error messages
 - Internally store timezones after first call, allowing you to use the app offline after opening choose_location screen once
+- Tap time to change to 24 hour format, and vice versa
 
 ## TODO
-- Tap time to change to 24 hour format
 - Info page, showing credits, and linking to this GitHub page
 - Loading screen for edit location (maybe?)
 - Change overscroll (maybe?)
