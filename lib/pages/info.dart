@@ -57,14 +57,13 @@ class _InfoState extends State<Info> {
             ],
           ),
 
-          ListTile(
-            onTap: () {},
-            title: const Text(
+          const ListTile(
+            title: Text(
               "World Time",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 25),
             ),
-            subtitle: const Text(
+            subtitle: Text(
               "v1.7.1",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.black),
