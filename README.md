@@ -14,9 +14,9 @@ This app makes use of 2 APIs: [TimeZoneDB](https://timezonedb.com/) for timezone
 - Alert dialog showing error messages
 - Internally store timezones after first call, allowing you to use the app offline after opening choose_location screen once
 - Tap time to change to 24 hour format, and vice versa
+- Info page showing credits and linking to this GitHub page
 
 ## TODO
-- Info page, showing credits, and linking to this GitHub page
 - Loading screen for edit location (maybe?)
 - Change overscroll (maybe?)
 
