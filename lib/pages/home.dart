@@ -70,23 +70,26 @@ class _HomeState extends State<Home> {
             ),
           ),
           
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Material(
+            type: MaterialType.transparency,
             child: Column(
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, "/info");
-                    }, 
-                    icon: const Icon(Icons.info_outline),
-                    color: Colors.grey[300],
-                    iconSize: 25,
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/info");
+                      }, 
+                      icon: const Icon(Icons.info_outline),
+                      color: Colors.grey[300],
+                      iconSize: 25,
+                    ),
                   ),
                 ),
 
-                const SizedBox(height: 120),
+                const SizedBox(height: 110),
 
                 // Edit location button
                 TextButton.icon(
