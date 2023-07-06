@@ -71,9 +71,23 @@ class _HomeState extends State<Home> {
           ),
           
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 120, 0, 0),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Column(
               children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, "/info");
+                    }, 
+                    icon: const Icon(Icons.info_outline),
+                    color: Colors.white,
+                    iconSize: 25,
+                  ),
+                ),
+
+                const SizedBox(height: 120),
+
                 // Edit location button
                 TextButton.icon(
                   onPressed: () async {
