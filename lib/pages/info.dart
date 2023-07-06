@@ -21,6 +21,7 @@ class _InfoState extends State<Info> {
         }
       },
       title: Text(title),
+      subtitle: Text(link),
     );
   }
 
@@ -35,10 +36,39 @@ class _InfoState extends State<Info> {
 
       body: Column(
         children: [
+          const SizedBox(height: 20),
+          const Stack(
+            alignment: Alignment.center,
+            children: [
+              CircleAvatar(
+                radius: 55,
+                backgroundColor: Colors.greenAccent,
+              ),
+              Icon(
+                Icons.public,
+                color: Colors.blue,
+                size: 140,
+              ),
+              Icon(
+                Icons.schedule_outlined,
+                color: Color.fromRGBO(250, 250, 250, 1),
+                size: 150,
+              ),
+            ],
+          ),
+
           ListTile(
             onTap: () {},
-            title: const Text("Version"),
-            subtitle: const Text("1.7.0"),
+            title: const Text(
+              "World Time",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 25),
+            ),
+            subtitle: const Text(
+              "v1.7.0",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black),
+            ),
           ),
 
           getLinkTile(
@@ -50,7 +80,7 @@ class _InfoState extends State<Info> {
             "Original GitHub Repo"
           ),
           getLinkTile(
-            "https://github.com/r280822a/world_time_complete#readme", 
+            "https://github.com/r280822a/world_time_complete#apis", 
             "APIs used: TimeZoneDB, Flagcdn"
           ),
         ],

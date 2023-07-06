@@ -81,7 +81,7 @@ class _HomeState extends State<Home> {
                       Navigator.pushNamed(context, "/info");
                     }, 
                     icon: const Icon(Icons.info_outline),
-                    color: Colors.white,
+                    color: Colors.grey[300],
                     iconSize: 25,
                   ),
                 ),
@@ -114,7 +114,9 @@ class _HomeState extends State<Home> {
                   }, 
                   icon: const Icon(Icons.edit_location), 
                   label: const Text("Edit location"),
-                  style: TextButton.styleFrom(foregroundColor: Colors.grey[300]),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.grey[300]
+                  ),
                 ),
                 const SizedBox(height: 20),
           

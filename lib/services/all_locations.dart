@@ -40,7 +40,9 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
       ));
 
       int wantedTimestamp = data["zones"][i]["timestamp"];
-      allTimezones[i].getOffset(context, localTimestamp, wantedTimestamp);
+      if (context.mounted){
+        allTimezones[i].getOffset(context, localTimestamp, wantedTimestamp);
+      }
     }
   } catch(e) {
     showAlertDialog(context, "$e");
