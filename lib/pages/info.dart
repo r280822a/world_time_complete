@@ -42,12 +42,12 @@ class _InfoState extends State<Info> {
             children: [
               CircleAvatar(
                 radius: 55,
-                backgroundColor: Colors.greenAccent,
+                backgroundColor: Colors.blue,
               ),
               Icon(
                 Icons.public,
-                color: Colors.blue,
-                size: 140,
+                color: Colors.greenAccent,
+                size: 149,
               ),
               Icon(
                 Icons.schedule_outlined,
@@ -65,7 +65,7 @@ class _InfoState extends State<Info> {
               style: TextStyle(fontSize: 25),
             ),
             subtitle: const Text(
-              "v1.7.0",
+              "v1.7.1",
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.black),
             ),
