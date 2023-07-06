@@ -18,6 +18,7 @@ This app makes use of 2 APIs: [TimeZoneDB](https://timezonedb.com/) for timezone
 
 ## TODO
 - Loading screen for edit location (maybe?)
+- Dark mode (maybe?)
 - Change overscroll (maybe?)
 
 <br/>
