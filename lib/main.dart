@@ -13,18 +13,16 @@ class MyApp extends StatefulWidget {
     super.key,
   });
 
-  /// ↓↓ ADDED
   /// InheritedWidget style accessor to our State object. 
   static _MyAppState of(BuildContext context) => 
-      context.findAncestorStateOfType<_MyAppState>()!;
-  bool darkModeOn(context) => Theme.of(context).brightness == Brightness.dark;
+    context.findAncestorStateOfType<_MyAppState>()!;
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  /// 1) our themeMode "state" field
+  // themeMode "state" field
   ThemeMode _themeMode = ThemeMode.system;
 
   @override
@@ -32,7 +30,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       theme: ThemeData(),
       darkTheme: ThemeData.dark(),
-      themeMode: _themeMode, // 2) ← ← ← use "state" field here //////////////
+      themeMode: _themeMode,
       routes: {
         "/": (context) => Loading(),
         "/home": (context) => Home(),
@@ -42,10 +40,8 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  /// 3) Call this to change theme from any context using "of" accessor
-  /// e.g.:
-  /// MyApp.of(context).changeTheme(ThemeMode.dark);
   void changeTheme(ThemeMode themeMode) {
+    // Change theme from any context using "of" accessor
     setState(() {
       _themeMode = themeMode;
     });

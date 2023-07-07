@@ -15,7 +15,10 @@ class _InfoState extends State<Info> {
     return ListTile(
       onTap: () async {
         try {
-          await launchUrl(Uri.parse(link), mode: LaunchMode.externalApplication);
+          await launchUrl(
+            Uri.parse(link),
+            mode: LaunchMode.externalApplication
+          );
         } catch (e) {
           showAlertDialog(context, "$e");
           print("Caught error: $e");
@@ -67,6 +70,7 @@ class _InfoState extends State<Info> {
       body: Column(
         children: [
           const SizedBox(height: 20),
+          // App Icon
           Stack(
             alignment: Alignment.center,
             children: [
@@ -92,6 +96,7 @@ class _InfoState extends State<Info> {
             ],
           ),
 
+          // App Name + Version
           ListTile(
             title: const Text(
               "World Time",
@@ -105,7 +110,7 @@ class _InfoState extends State<Info> {
             ),
           ),
 
-          /// Change theme & rebuild to show it using these buttons 
+          // Change theme & rebuild to show it using these buttons
           ListTile(
             title: const Text("Theme"),
             subtitle: Text(theme),
@@ -129,6 +134,7 @@ class _InfoState extends State<Info> {
             },
           ),
 
+          // List tiles for links
           getLinkTile(
             "https://github.com/r280822a/world_time_complete", 
             "GitHub Repo"
