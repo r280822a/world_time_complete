@@ -15,10 +15,12 @@ This app makes use of 2 APIs: [TimeZoneDB](https://timezonedb.com/) for timezone
 - Internally store timezones after first call, allowing you to use the app offline after opening choose_location screen once
 - Tap time to change to 24 hour format, and vice versa
 - Info page showing credits and linking to this GitHub page
+- Dark mode
 
 ## TODO
+- Add more comments
+- Improve variable names to be more understandable
 - Loading screen for edit location (maybe?)
-- Dark mode (maybe?)
 - Change overscroll (maybe?)
 
 <br/>
