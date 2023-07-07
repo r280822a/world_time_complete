@@ -26,6 +26,35 @@ class _InfoState extends State<Info> {
     );
   }
 
+  String theme = "System Default";
+  RadioMenuButton getThemeRadioButton(String title){
+    return RadioMenuButton(
+      value: title,
+      groupValue: theme,
+      onChanged: (value){
+        setState(() {
+          theme = title;
+          switch (title) {
+            case "Light": 
+              MyApp.of(context).changeTheme(ThemeMode.light);
+              break;
+            case "Dark": 
+              MyApp.of(context).changeTheme(ThemeMode.dark);
+              break;
+            case "System Default": 
+              MyApp.of(context).changeTheme(ThemeMode.system);
+              break;
+          }
+          Navigator.pop(context);
+        });
+      },
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,25 +105,28 @@ class _InfoState extends State<Info> {
             ),
           ),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              /// //////////////////////////////////////////////////////
-              /// Change theme & rebuild to show it using these buttons 
-              ElevatedButton(
-                onPressed: () => MyApp.of(context).changeTheme(ThemeMode.light),
-                child: const Text("Light")
-              ),
-              ElevatedButton(
-                onPressed: () => MyApp.of(context).changeTheme(ThemeMode.dark),
-                child: const Text("Dark")
-              ),
-              ElevatedButton(
-                onPressed: () => MyApp.of(context).changeTheme(ThemeMode.system),
-                child: const Text("System")
-              ),
-              /// //////////////////////////////////////////////////////
-            ],
+          /// Change theme & rebuild to show it using these buttons 
+          ListTile(
+            title: const Text("Theme"),
+            subtitle: Text(theme),
+            onTap: () async {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text("Select Theme"),
+                  actionsAlignment: MainAxisAlignment.center,
+                  actions: [
+                    Column(
+                      children: [
+                        getThemeRadioButton("Light"),
+                        getThemeRadioButton("Dark"),
+                        getThemeRadioButton("System Default"),
+                      ]
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
 
           getLinkTile(
