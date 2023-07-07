@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:world_time/services/all_locations.dart';
+import 'package:world_time/main.dart';
 
 class Info extends StatefulWidget {
   const Info({super.key});
@@ -69,10 +70,31 @@ class _InfoState extends State<Info> {
               style: TextStyle(fontSize: 25),
             ),
             subtitle: Text(
-              "v1.7.1",
+              "v1.8.0",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall,
             ),
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              /// //////////////////////////////////////////////////////
+              /// Change theme & rebuild to show it using these buttons 
+              ElevatedButton(
+                onPressed: () => MyApp.of(context).changeTheme(ThemeMode.light),
+                child: const Text("Light")
+              ),
+              ElevatedButton(
+                onPressed: () => MyApp.of(context).changeTheme(ThemeMode.dark),
+                child: const Text("Dark")
+              ),
+              ElevatedButton(
+                onPressed: () => MyApp.of(context).changeTheme(ThemeMode.system),
+                child: const Text("System")
+              ),
+              /// //////////////////////////////////////////////////////
+            ],
           ),
 
           getLinkTile(
