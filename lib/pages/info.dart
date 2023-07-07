@@ -126,6 +126,15 @@ class _InfoState extends State<Info> {
                         getThemeRadioButton("Light"),
                         getThemeRadioButton("Dark"),
                         getThemeRadioButton("System Default"),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text("Cancel"),
+                          ),
+                        ),
                       ]
                     ),
                   ],
