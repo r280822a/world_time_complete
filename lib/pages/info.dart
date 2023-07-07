@@ -37,28 +37,33 @@ class _InfoState extends State<Info> {
       body: Column(
         children: [
           const SizedBox(height: 20),
-          const Stack(
+          Stack(
             alignment: Alignment.center,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 55,
                 backgroundColor: Colors.blue,
               ),
-              Icon(
+              const Icon(
                 Icons.public,
                 color: Colors.greenAccent,
-                size: 149,
+                size: 140,
               ),
-              Icon(
+              const Icon(
                 Icons.schedule_outlined,
                 color: Color.fromRGBO(250, 250, 250, 1),
+                size: 140,
+              ),
+              Icon(
+                Icons.circle_outlined,
+                color: Theme.of(context).scaffoldBackgroundColor,
                 size: 150,
               ),
             ],
           ),
 
-          const ListTile(
-            title: Text(
+          ListTile(
+            title: const Text(
               "World Time",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 25),
@@ -66,7 +71,7 @@ class _InfoState extends State<Info> {
             subtitle: Text(
               "v1.7.1",
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black),
+              style: Theme.of(context).textTheme.titleSmall,
             ),
           ),
 

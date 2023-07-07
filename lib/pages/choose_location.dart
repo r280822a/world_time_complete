@@ -46,6 +46,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
     return timezonesInContinent;
   }
 
+
   @override
   Widget build(BuildContext context) {
     Map data = ModalRoute.of(context)!.settings.arguments as Map;
@@ -65,18 +66,23 @@ class _ChooseLocationState extends State<ChooseLocation> {
       ),
 
       // Cards for each location
-      body: ListView.builder(
-        itemCount: allContinents.length,
-        itemBuilder: ((context, index) {
-          return ExpansionTile(
-            title: Text(allContinents[index]),
-            children: <Widget>[
-              Column(
-                children: buildExpandableContent(allContinents[index], allLocationContinents),
-              ),
-            ],
-          );
-        })
+      body: Container(
+        color: Theme.of(context).cardColor,
+        child: ListView.builder(
+          itemCount: allContinents.length,
+          itemBuilder: ((context, index) {
+            return ExpansionTile(
+              title: Text(allContinents[index]),
+              backgroundColor: Theme.of(context).cardColor,
+              collapsedBackgroundColor: Theme.of(context).cardColor,
+              children: <Widget>[
+                Column(
+                  children: buildExpandableContent(allContinents[index], allLocationContinents),
+                ),
+              ],
+            );
+          })
+        ),
       )
     );
   }
