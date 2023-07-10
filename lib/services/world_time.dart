@@ -1,25 +1,25 @@
 class WorldTime {
-  String location;
+  String timezone;
   String flag; // Flag URL
-  String url; // URL for API endpoint
+  String continent;
   bool isDay = true;
   late Duration offset; // Offset from local time
 
   // Constructor, requiring each attribute to be explicitly named
-  WorldTime({required this.location, required this.flag, required this.url});
+  WorldTime({required this.timezone, required this.flag, required this.continent});
 
-  Future<void> getOffset(int localTimestamp, int wantedTimestamp) async {
+  Future<void> getOffset(int localTimestamp, int zoneTimestamp) async {
     // Gets offset for class timezone
     // Initalise variables
-    DateTime wantedDatetime = DateTime.now();
-    DateTime localDatetime = wantedDatetime;
+    DateTime zoneDatetime = DateTime.now();
+    DateTime localDatetime = zoneDatetime;
 
     // Get local date time
     localDatetime = DateTime.fromMillisecondsSinceEpoch(localTimestamp * 1000);
-    // Get wanted date time
-    wantedDatetime = DateTime.fromMillisecondsSinceEpoch(wantedTimestamp * 1000);
+    // Get class timezone date time
+    zoneDatetime = DateTime.fromMillisecondsSinceEpoch(zoneTimestamp * 1000);
 
-    // Offset is the difference between local timezone and wanted timezone
-    offset = wantedDatetime.difference(localDatetime);
+    // Offset is the difference between local timezone and class timezone
+    offset = zoneDatetime.difference(localDatetime);
   }
 }

@@ -19,7 +19,7 @@ class _LoadingState extends State<Loading> {
     if (mounted) {
       Navigator.pushReplacementNamed(context, "/home", arguments: {
         "instance": instance,
-        "location": instance.location,
+        "timezone": instance.timezone,
         "isDay": instance.isDay,
       });
     }

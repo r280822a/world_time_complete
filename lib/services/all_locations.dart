@@ -21,25 +21,27 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
     Map data = jsonDecode(response.body);
 
     // Get local date time
-    WorldTime localTimeZone = await getLocalTimeZone();
-    Response localResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=***REMOVED***&format=json&by=zone&zone=${localTimeZone.url}"));
+    String localTimezoneName = await FlutterTimezone.getLocalTimezone();
+    Response localResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=***REMOVED***&format=json&by=zone&zone=$localTimezoneName"));
     Map localData = jsonDecode(localResponse.body);
     int localTimestamp = localData["timestamp"];
 
     for (int i = 0; i < data["zones"].length; i++){
       // For each timezone in data, add to allTimezones
-      String url = data["zones"][i]["zoneName"].replaceAll("\\", "");
       String flag = data["zones"][i]["countryCode"].toLowerCase();
       flag = "https://flagcdn.com/h80/$flag.png";
 
-      List<String> split = url.split("/");
-      String locationName = split[split.length - 1];
-      locationName = locationName.replaceAll("_", " ");
+      String zoneName = data["zones"][i]["zoneName"].replaceAll("\\", "");
+      List<String> split = zoneName.split("/");
+
+      String timezone = split[split.length - 1];
+      timezone = timezone.replaceAll("_", " ");
+      String continent = split[0];
 
       allTimezones.add(WorldTime(
-        location: locationName, 
+        timezone: timezone, 
         flag: flag, 
-        url: url
+        continent: continent
       ));
 
       // Get offset for each timezone
@@ -58,10 +60,13 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
 
 Future<WorldTime> getLocalTimeZone() async {
   // Returns a WorldTime object specifying the local timezone
-  String url = await FlutterTimezone.getLocalTimezone();
-  List<String> split = url.split("/");
-  String location = split[split.length - 1];
-  WorldTime localTimezone = WorldTime(location: location, flag: "", url: url); 
+  String zoneName = await FlutterTimezone.getLocalTimezone();
+  
+  List<String> split = zoneName.split("/");
+  String timezone = split[split.length - 1];
+  String continent = split[0];
+
+  WorldTime localTimezone = WorldTime(timezone: timezone, flag: "", continent: continent); 
   return localTimezone;
 }
 
@@ -71,14 +76,12 @@ Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allTimezones) {
 
   // Form a key for each continent in allTimezones
   for (int i = 0; i < allTimezones.length; i++) {
-    List<String> split = allTimezones[i].url.split("/");
-    allContinents[split[0]] = [];
+    allContinents[allTimezones[i].continent] = [];
   }
 
   // Add timezones to each continent
   for (int i = 0; i < allTimezones.length; i++) {
-    List<String> split = allTimezones[i].url.split("/");
-    allContinents[split[0]]!.add(allTimezones[i]);
+    allContinents[allTimezones[i].continent]!.add(allTimezones[i]);
   }
 
   return allContinents;

@@ -10,34 +10,34 @@ class ChooseLocation extends StatefulWidget {
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
-  List<WorldTime> locations = [];
+  List<WorldTime> timezones = [];
 
   void updateTime(WorldTime instance) async {
     // Navigate to homescreen
     if (mounted) {
       Navigator.pop(context, {
         "instance": instance,
-        "location": instance.location,
+        "timezone": instance.timezone,
         "isDay": instance.isDay,
       });
     }
   }
 
-  List<Widget> buildExpandableContent(String continent, Map<String, List<WorldTime>> allLocationContinents) {
+  List<Widget> buildExpandableContent(String continent, Map<String, List<WorldTime>> allContinentsMap) {
     // To build what goes inside the ExpansionTile
 
     // List of timezone ListTiles
     List<Widget> timezoneTiles = [];
 
-    for (int i = 0; i < allLocationContinents[continent]!.length; i++) {
+    for (int i = 0; i < allContinentsMap[continent]!.length; i++) {
       // Add a ListTile for each timezone in the given continent
-      List<WorldTime> timezone = allLocationContinents[continent]!;
+      List<WorldTime> timezone = allContinentsMap[continent]!;
       timezoneTiles.add(
         ListTile(
           onTap: () {
             updateTime(timezone[i]);
           },
-          title: Text(timezone[i].location),
+          title: Text(timezone[i].timezone),
           leading: CircleAvatar(
             backgroundImage: NetworkImage(timezone[i].flag),
           ),
@@ -52,12 +52,12 @@ class _ChooseLocationState extends State<ChooseLocation> {
   @override
   Widget build(BuildContext context) {
     Map data = ModalRoute.of(context)!.settings.arguments as Map;
-    locations = data["locations"]; // List of timezones
+    timezones = data["timezones"]; // List of timezones
 
     // Get all continents and the timezones in each continent
-    Map<String, List<WorldTime>> allLocationContinents = getAllContinents(locations);
+    Map<String, List<WorldTime>> allContinentsMap = getAllContinents(timezones);
     // List of just continents
-    List<String> allContinents = allLocationContinents.keys.toList();
+    List<String> allContinents = allContinentsMap.keys.toList();
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -81,7 +81,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
                 Column(
                   children: buildExpandableContent(
                     allContinents[index], 
-                    allLocationContinents
+                    allContinentsMap
                   ),
                 ),
               ],

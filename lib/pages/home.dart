@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Map data = {}; // Map for a given location
+  Map data = {}; // Map for a given timezone
   String time = "";
   bool is24Hour = false;
 
@@ -97,20 +97,20 @@ class _HomeState extends State<Home> {
                 TextButton.icon(
                   onPressed: () async {
                     // List of all timezones
-                    List<WorldTime> allLocations = await getAllTimezones(context);
+                    List<WorldTime> allTimezones = await getAllTimezones(context);
 
-                    if (mounted && allLocations.isNotEmpty) {
+                    if (mounted && allTimezones.isNotEmpty) {
                       // Open choose_location screen, sending timezones, and wait for reponse
                       dynamic result = await Navigator.pushNamed(context, "/location", arguments: {
-                        "locations": allLocations,
+                        "timezones": allTimezones,
                       });
 
-                      // If timezone selected, change home screen location
+                      // If timezone selected, change home screen timezone
                       if (result != null){
                         setState(() {
                           data = {
                             "instance": result["instance"],
-                            "location": result["location"],
+                            "timezone": result["timezone"],
                             "isDay": result["isDay"],
                           };
                         });
@@ -123,12 +123,12 @@ class _HomeState extends State<Home> {
                 ),
                 const SizedBox(height: 20),
           
-                // Location name + time
+                // Timezone name + time
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      data["location"], 
+                      data["timezone"], 
                       style: const TextStyle(
                         fontSize: 28, 
                         letterSpacing: 2, 
