@@ -25,12 +25,14 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   List<Widget> buildExpandableContent(String continent, Map<String, List<WorldTime>> allLocationContinents) {
     // To build what goes inside the ExpansionTile
-    List<Widget> timezonesInContinent = []; // List of timezones in a given continent
+
+    // List of timezone ListTiles
+    List<Widget> timezoneTiles = [];
 
     for (int i = 0; i < allLocationContinents[continent]!.length; i++) {
       // Add a ListTile for each timezone in the given continent
       List<WorldTime> timezone = allLocationContinents[continent]!;
-      timezonesInContinent.add(
+      timezoneTiles.add(
         ListTile(
           onTap: () {
             updateTime(timezone[i]);
@@ -43,7 +45,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
       );
     }
 
-    return timezonesInContinent;
+    return timezoneTiles;
   }
 
 
@@ -65,7 +67,7 @@ class _ChooseLocationState extends State<ChooseLocation> {
         elevation: 0,
       ),
 
-      // Cards for each location
+      // Expandable continent tile, revealing cards for each timezone
       body: Container(
         color: Theme.of(context).cardColor,
         child: ListView.builder(
@@ -77,7 +79,10 @@ class _ChooseLocationState extends State<ChooseLocation> {
               collapsedBackgroundColor: Theme.of(context).cardColor,
               children: <Widget>[
                 Column(
-                  children: buildExpandableContent(allContinents[index], allLocationContinents),
+                  children: buildExpandableContent(
+                    allContinents[index], 
+                    allLocationContinents
+                  ),
                 ),
               ],
             );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:url_launcher/url_launcher.dart';
 import 'package:world_time/services/all_locations.dart';
 import 'package:world_time/main.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
@@ -13,6 +12,7 @@ class Info extends StatefulWidget {
 
 class _InfoState extends State<Info> {
   ListTile getLinkTile(String link, String title) {
+    // Returns ListTile that opens link when tapped
     return ListTile(
       onTap: () async {
         try {
@@ -34,6 +34,7 @@ class _InfoState extends State<Info> {
 
   late String theme;
   RadioMenuButton getThemeRadioButton(String title){
+    // Returns radio button, to select theme
     return RadioMenuButton(
       value: title,
       groupValue: theme,
@@ -64,7 +65,7 @@ class _InfoState extends State<Info> {
   @override
   void initState() {
     super.initState();
-    theme = MyApp.of(context).getTheme();
+    theme = MyApp.of(context).getTheme(); // Get currently selected theme
   }
 
   @override

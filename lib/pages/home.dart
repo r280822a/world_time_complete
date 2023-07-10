@@ -32,6 +32,7 @@ class _HomeState extends State<Home> {
   }
 
   void _update() async {
+    // Updates time, every second
     DateTime dateTime = DateTime.now();
     dateTime = dateTime.add(data["instance"].offset);
 
@@ -74,6 +75,7 @@ class _HomeState extends State<Home> {
             type: MaterialType.transparency,
             child: Column(
               children: [
+                // Info page icon
                 Padding(
                   padding: const EdgeInsets.all(10),
                   child: Align(
@@ -91,7 +93,7 @@ class _HomeState extends State<Home> {
 
                 const SizedBox(height: 110),
 
-                // Edit location button
+                // Edit location button, launching choose_location
                 TextButton.icon(
                   onPressed: () async {
                     // List of all timezones

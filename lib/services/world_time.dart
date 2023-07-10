@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class WorldTime {
   String location;
   String flag; // Flag URL
@@ -10,8 +8,8 @@ class WorldTime {
   // Constructor, requiring each attribute to be explicitly named
   WorldTime({required this.location, required this.flag, required this.url});
 
-  Future<void> getOffset(BuildContext context, int localTimestamp, int wantedTimestamp) async {
-    // Gets offset for wanted timezone (the timezone specified in url attribute)
+  Future<void> getOffset(int localTimestamp, int wantedTimestamp) async {
+    // Gets offset for class timezone
     // Initalise variables
     DateTime wantedDatetime = DateTime.now();
     DateTime localDatetime = wantedDatetime;

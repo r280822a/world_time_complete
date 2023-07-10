@@ -9,8 +9,10 @@ List<WorldTime> allTimezones = [];
 Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
   // Return list of all timezones
 
-  if (allTimezones.isNotEmpty){
+  if (allTimezones.length == 418){
     return allTimezones;
+  } else {
+    allTimezones = [];
   }
 
   try {
@@ -25,6 +27,7 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
     int localTimestamp = localData["timestamp"];
 
     for (int i = 0; i < data["zones"].length; i++){
+      // For each timezone in data, add to allTimezones
       String url = data["zones"][i]["zoneName"].replaceAll("\\", "");
       String flag = data["zones"][i]["countryCode"].toLowerCase();
       flag = "https://flagcdn.com/h80/$flag.png";
@@ -39,10 +42,9 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
         url: url
       ));
 
+      // Get offset for each timezone
       int wantedTimestamp = data["zones"][i]["timestamp"];
-      if (context.mounted){
-        allTimezones[i].getOffset(context, localTimestamp, wantedTimestamp);
-      }
+      allTimezones[i].getOffset(localTimestamp, wantedTimestamp);
     }
   } catch(e) {
     showAlertDialog(context, "$e");
@@ -83,6 +85,7 @@ Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allTimezones) {
 }
 
 showAlertDialog(BuildContext context, String error) {
+  // Shows alert dialog, for errors
   showDialog(
     context: context,
     builder: (context) => AlertDialog(

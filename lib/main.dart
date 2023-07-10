@@ -13,7 +13,7 @@ class MyApp extends StatefulWidget {
     super.key,
   });
 
-  /// InheritedWidget style accessor to our State object. 
+  // InheritedWidget style accessor to our State object
   static _MyAppState of(BuildContext context) => 
     context.findAncestorStateOfType<_MyAppState>()!;
 
@@ -47,6 +47,7 @@ class _MyAppState extends State<MyApp> {
     });
   }
   String getTheme() {
+    // Return string based on _themeMode
     switch (_themeMode) {
       case ThemeMode.light:
         return "Light";
