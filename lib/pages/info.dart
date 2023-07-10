@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+// import 'package:url_launcher/url_launcher.dart';
 import 'package:world_time/services/all_locations.dart';
 import 'package:world_time/main.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 class Info extends StatefulWidget {
   const Info({super.key});
@@ -15,9 +16,11 @@ class _InfoState extends State<Info> {
     return ListTile(
       onTap: () async {
         try {
-          await launchUrl(
-            Uri.parse(link),
-            mode: LaunchMode.externalApplication
+          await launch(
+            link,
+            customTabsOption: CustomTabsOption(
+              toolbarColor: Colors.blue[900],
+            )
           );
         } catch (e) {
           showAlertDialog(context, "$e");
