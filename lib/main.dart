@@ -46,4 +46,14 @@ class _MyAppState extends State<MyApp> {
       _themeMode = themeMode;
     });
   }
+  String getTheme() {
+    switch (_themeMode) {
+      case ThemeMode.light:
+        return "Light";
+      case ThemeMode.dark:
+        return "Dark";
+      case ThemeMode.system:
+        return "System Default";
+    }
+  }
 }

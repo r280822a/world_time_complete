@@ -29,7 +29,7 @@ class _InfoState extends State<Info> {
     );
   }
 
-  String theme = "System Default";
+  late String theme;
   RadioMenuButton getThemeRadioButton(String title){
     return RadioMenuButton(
       value: title,
@@ -56,6 +56,12 @@ class _InfoState extends State<Info> {
         style: Theme.of(context).textTheme.titleMedium,
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    theme = MyApp.of(context).getTheme();
   }
 
   @override
@@ -104,7 +110,7 @@ class _InfoState extends State<Info> {
               style: TextStyle(fontSize: 25),
             ),
             subtitle: Text(
-              "v1.8.0",
+              "v1.8.1",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall,
             ),
