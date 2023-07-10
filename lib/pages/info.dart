@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:world_time/services/all_locations.dart';
+import 'package:world_time/services/helper_widgets.dart';
 import 'package:world_time/main.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
@@ -114,7 +114,7 @@ class _InfoState extends State<Info> {
               style: TextStyle(fontSize: 25),
             ),
             subtitle: Text(
-              "v1.8.1",
+              "v2.0.0",
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleSmall,
             ),

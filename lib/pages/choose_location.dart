@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:world_time/services/world_time.dart';
 import 'package:world_time/services/all_locations.dart';
+import 'package:world_time/services/helper_widgets.dart';
 
 class ChooseLocation extends StatefulWidget {
   const ChooseLocation({super.key});
@@ -48,11 +49,23 @@ class _ChooseLocationState extends State<ChooseLocation> {
     return timezoneTiles;
   }
 
+  @override
+  void initState() {
+    super.initState();
+    // Only ever runs once, when first initalising screen
+    getTimezones();
+  }
+
+  void getTimezones() async {
+    // Get all timezones, then rebuild
+    timezones = await getAllTimezones(context);
+    setState(() {});
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    Map data = ModalRoute.of(context)!.settings.arguments as Map;
-    timezones = data["timezones"]; // List of timezones
+    if (timezones.isEmpty) {return getLoadingScreen();}
 
     // Get all continents and the timezones in each continent
     Map<String, List<WorldTime>> allContinentsMap = getAllContinents(timezones);

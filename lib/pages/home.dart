@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'package:world_time/services/all_locations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:world_time/services/helper_widgets.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,14 +14,15 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Map data = {}; // Map for a given timezone
+  late WorldTime displayTimezone;
+  bool loading = true;
   String time = "";
   bool is24Hour = false;
 
   @override
   void initState() {
     super.initState();
-    Timer.periodic(const Duration(seconds: 1), (timer) => _update());
+    setupLocalTime();
     Fluttertoast.showToast(
         msg: "Tap the time to change to 24 hour format, and vice versa",
         toastLength: Toast.LENGTH_LONG,
@@ -31,33 +33,41 @@ class _HomeState extends State<Home> {
     );
   }
 
+  void setupLocalTime() async {
+    // Load local time by default
+    displayTimezone = await getLocalTimeZone();
+    displayTimezone.offset = const Duration(seconds: 0);
+    
+    Timer.periodic(const Duration(seconds: 1), (timer) => _update());
+    setState(() {
+      loading = false;
+    });
+  }
+
   void _update() async {
     // Updates time, every second
     DateTime dateTime = DateTime.now();
-    dateTime = dateTime.add(data["instance"].offset);
+    dateTime = dateTime.add(displayTimezone.offset);
 
-    setState(() {
-      if (is24Hour){
-        time = DateFormat.Hm().format(dateTime);
-      } else{
-        time = DateFormat.jm().format(dateTime);
-      }
-      data["isDay"] = (dateTime.hour > 6 && dateTime.hour < 20) ? true : false;
-    });
+    if (mounted) {
+      setState(() {
+        if (is24Hour){
+          time = DateFormat.Hm().format(dateTime);
+        } else{
+          time = DateFormat.jm().format(dateTime);
+        }
+        displayTimezone.isDay = (dateTime.hour > 6 && dateTime.hour < 20) ? true : false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // If empty, recieve map from loading screen
-    if (data.isEmpty){
-      data = ModalRoute.of(context)!.settings.arguments as Map;
-      _update();
-    }
+    if (loading) {return getLoadingScreen();}
 
     // Set background
-    String bgImage = data["isDay"] ? "day.png" : "night.png";
-    Color? bgColor = data["isDay"] ? const Color(0xff1288c8) : const Color(0xff282761);
-
+    String bgImage = displayTimezone.isDay ? "day.png" : "night.png";
+    Color? bgColor = displayTimezone.isDay ? const Color(0xff1288c8) : const Color(0xff282761);
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -96,23 +106,14 @@ class _HomeState extends State<Home> {
                 // Edit location button, launching choose_location
                 TextButton.icon(
                   onPressed: () async {
-                    // List of all timezones
-                    List<WorldTime> allTimezones = await getAllTimezones(context);
-
-                    if (mounted && allTimezones.isNotEmpty) {
+                    if (mounted) {
                       // Open choose_location screen, sending timezones, and wait for reponse
-                      dynamic result = await Navigator.pushNamed(context, "/location", arguments: {
-                        "timezones": allTimezones,
-                      });
+                      dynamic result = await Navigator.pushNamed(context, "/location");
 
                       // If timezone selected, change home screen timezone
                       if (result != null){
                         setState(() {
-                          data = {
-                            "instance": result["instance"],
-                            "timezone": result["timezone"],
-                            "isDay": result["isDay"],
-                          };
+                          displayTimezone = result["instance"];
                         });
                       }
                     }
@@ -128,7 +129,7 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      data["timezone"], 
+                      displayTimezone.timezone, 
                       style: const TextStyle(
                         fontSize: 28, 
                         letterSpacing: 2, 

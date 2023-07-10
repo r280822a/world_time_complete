@@ -2,6 +2,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:world_time/services/world_time.dart';
+import 'package:world_time/services/helper_widgets.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 
 List<WorldTime> allTimezones = [];
@@ -87,21 +88,3 @@ Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allTimezones) {
   return allContinents;
 }
 
-showAlertDialog(BuildContext context, String error) {
-  // Shows alert dialog, for errors
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: const Text("Make sure you're connected to the internet"),
-      content: Text(error),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          child: const Text("OK"),
-        )
-      ],
-    ),
-  );
-}
