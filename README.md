@@ -6,8 +6,7 @@ The goal of this app is to complete the world time app that The Net Ninja made a
 This app makes use of 2 APIs: [TimeZoneDB](https://timezonedb.com/) for timezones, timestamps & country codes, and [Flagcdn](https://flagcdn.com/) for flag images. Both APIs are free for non-commercial use: [TimeZoneDB is under CC3](https://timezonedb.com/about), [Flagcdn is in the public domain](https://flagpedia.net/about)
 
 ## Features
-- All timezones listed
-- Appropriate flags for each timezone
+- All timezones listed, with appropriate flags
 - Timezones categorized into continents
 - Time updates every second, on home screen
 - Shows local timezone at first, on home screen
@@ -16,12 +15,6 @@ This app makes use of 2 APIs: [TimeZoneDB](https://timezonedb.com/) for timezone
 - Tap time to change to 24 hour format, and vice versa
 - Info page showing credits and linking to this GitHub page
 - Dark mode
-
-## TODO
-- Add more comments
-- Improve variable names to be more understandable
-- Loading screen for edit location (maybe?)
-- Change overscroll (maybe?)
 
 <br/>
 Link to The Net Ninja's GitHub repo: https://github.com/iamshaunjp/flutter-beginners-tutorial <br>
