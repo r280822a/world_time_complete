@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:world_time/services/world_time.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import 'package:world_time/services/all_locations.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:world_time/services/world_time.dart';
+import 'package:world_time/services/all_locations.dart';
 import 'package:world_time/services/helper_widgets.dart';
 
 class Home extends StatefulWidget {
@@ -62,9 +62,10 @@ class _HomeState extends State<Home> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
-    if (loading) {return getLoadingScreen();}
+    if (loading) {return getLoadingScreen("Home");}
 
     // Set background
     String bgImage = displayTimezone.isDay ? "day.png" : "night.png";

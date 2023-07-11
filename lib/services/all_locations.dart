@@ -1,9 +1,9 @@
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:world_time/services/world_time.dart';
 import 'package:world_time/services/helper_widgets.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
 
 List<WorldTime> allTimezones = [];
 
@@ -11,13 +11,14 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
   // Return list of all timezones
 
   if (allTimezones.length == 418){
+    // If allTimezones already has all timezones, return it
     return allTimezones;
   } else {
     allTimezones = [];
   }
 
   try {
-    // Make request to API
+    // Make request to API, get data
     Response response = await get(Uri.parse("https://api.timezonedb.com/v2.1/list-time-zone?key=***REMOVED***&format=json"));
     Map data = jsonDecode(response.body);
 
@@ -45,9 +46,9 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
         continent: continent
       ));
 
-      // Get offset for each timezone
+      // Initialize offset for each timezone
       int wantedTimestamp = data["zones"][i]["timestamp"];
-      allTimezones[i].getOffset(localTimestamp, wantedTimestamp);
+      allTimezones[i].initOffset(localTimestamp, wantedTimestamp);
     }
   } catch(e) {
     showAlertDialog(context, "$e");
@@ -71,7 +72,7 @@ Future<WorldTime> getLocalTimeZone() async {
   return localTimezone;
 }
 
-Map<String, List<WorldTime>> getAllContinents(List<WorldTime> allTimezones) {
+Map<String, List<WorldTime>> getAllContinentsMap(List<WorldTime> allTimezones) {
   // Returns map with continents and timezones in each continent
   Map<String, List<WorldTime>> allContinents = {};
 

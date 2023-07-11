@@ -65,10 +65,10 @@ class _ChooseLocationState extends State<ChooseLocation> {
 
   @override
   Widget build(BuildContext context) {
-    if (timezones.isEmpty) {return getLoadingScreen();}
+    if (timezones.isEmpty) {return getLoadingScreen("Choose a location");}
 
     // Get all continents and the timezones in each continent
-    Map<String, List<WorldTime>> allContinentsMap = getAllContinents(timezones);
+    Map<String, List<WorldTime>> allContinentsMap = getAllContinentsMap(timezones);
     // List of just continents
     List<String> allContinents = allContinentsMap.keys.toList();
 

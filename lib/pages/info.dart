@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:world_time/services/helper_widgets.dart';
-import 'package:world_time/main.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:world_time/main.dart';
+import 'package:world_time/services/helper_widgets.dart';
 
 class Info extends StatefulWidget {
   const Info({super.key});
@@ -67,6 +67,7 @@ class _InfoState extends State<Info> {
     super.initState();
     theme = MyApp.of(context).getTheme(); // Get currently selected theme
   }
+
 
   @override
   Widget build(BuildContext context) {

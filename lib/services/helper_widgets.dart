@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-Widget getLoadingScreen() {
+Widget getLoadingScreen(title) {
   return Scaffold(
     // Loading screen with fading cube
     backgroundColor: Colors.blue[900],
+    appBar: AppBar(
+      backgroundColor: Colors.blue[900],
+      title: Text(title),
+      elevation: 0,
+    ),
     body: const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,

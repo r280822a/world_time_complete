@@ -4,7 +4,7 @@ import 'package:world_time/pages/home.dart';
 import 'package:world_time/pages/info.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -31,9 +31,9 @@ class _MyAppState extends State<MyApp> {
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
       routes: {
-        "/": (context) => Home(),
-        "/location":(context) => ChooseLocation(),
-        "/info":(context) => Info(),
+        "/": (context) => const Home(),
+        "/location":(context) => const ChooseLocation(),
+        "/info":(context) => const Info(),
       },
     );
   }

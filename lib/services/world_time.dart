@@ -8,9 +8,9 @@ class WorldTime {
   // Constructor, requiring each attribute to be explicitly named
   WorldTime({required this.timezone, required this.flag, required this.continent});
 
-  Future<void> getOffset(int localTimestamp, int zoneTimestamp) async {
-    // Gets offset for class timezone
-    // Initalise variables
+  Future<void> initOffset(int localTimestamp, int zoneTimestamp) async {
+    // Initialize appropriate offset for class timezone
+    // Initialize variables
     DateTime zoneDatetime = DateTime.now();
     DateTime localDatetime = zoneDatetime;
 
