@@ -88,4 +88,3 @@ Map<String, List<WorldTime>> getAllContinentsMap(List<WorldTime> allTimezones) {
 
   return allContinents;
 }
-
