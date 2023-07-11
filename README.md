@@ -1,7 +1,7 @@
 # World Time App, Completed
 
 <p align='center'>
-<img src='https://github.com/r280822a/world_time_complete/assets/137796180/a2cb7eca-5b42-4b7d-b42d-176676f4618e.png' width='200'>
+<img src='https://github.com/r280822a/world_time_complete/assets/137796180/65eab2de-d3f4-4e81-8226-191da4e46b59.png' width='200'>
 </p>
 
 Forked from The Net Ninja's Flutter Beginners GitHub repo. 
