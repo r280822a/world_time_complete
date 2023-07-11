@@ -69,7 +69,7 @@ class _HomeState extends State<Home> {
 
     // Set background
     String bgImage = displayTimezone.isDay ? "day.png" : "night.png";
-    Color? bgColor = displayTimezone.isDay ? const Color(0xff1288c8) : const Color(0xff282761);
+    Color? bgColor = displayTimezone.isDay ? const Color(0xff229df2) : const Color(0xff151527);
 
     return Scaffold(
       backgroundColor: bgColor,
