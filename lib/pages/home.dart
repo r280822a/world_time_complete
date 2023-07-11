@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
     // Load local time by default
     displayTimezone = await getLocalTimeZone();
     displayTimezone.offset = const Duration(seconds: 0);
+    _update();
     
     Timer.periodic(const Duration(seconds: 1), (timer) => _update());
     setState(() {
