@@ -103,7 +103,7 @@ class _HomeState extends State<Home> {
           
           child: Material(
             type: MaterialType.transparency,
-            child: Column(
+            child: ListView(
               children: [
                 // Info page icon
                 Padding(
@@ -143,9 +143,9 @@ class _HomeState extends State<Home> {
                   style: TextButton.styleFrom(foregroundColor: Colors.grey[300]),
                 ),
                 const SizedBox(height: 20),
-          
+
                 // Timezone name + time
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
@@ -156,18 +156,17 @@ class _HomeState extends State<Home> {
                         color: Colors.white,
                       ),
                     ),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        is24Hour = !is24Hour;
+                      },
+                      child: Text(
+                        time,
+                        style: const TextStyle(fontSize: 66, color: Colors.white),
+                      ),
+                    ),
                   ],
-                ),
-                const SizedBox(height: 20),
-        
-                GestureDetector(
-                  onTap: () {
-                    is24Hour = !is24Hour;
-                  },
-                  child: Text(
-                    time,
-                    style: const TextStyle(fontSize: 66, color: Colors.white),
-                  ),
                 ),
               ],
             ),
