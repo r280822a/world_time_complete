@@ -17,7 +17,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late WorldTime displayTimezone;
-  bool loading = true;
   String time = "";
   bool is24Hour = false;
   late final SharedPreferences prefs;
@@ -44,9 +43,6 @@ class _HomeState extends State<Home> {
     _update();
     
     Timer.periodic(const Duration(seconds: 1), (timer) => _update());
-    setState(() {
-      loading = false;
-    });
   }
 
   void _update() async {
@@ -83,7 +79,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {return getLoadingScreen("Home");}
+    if (time == "") {return getLoadingScreen("Home");}
 
     // Set background
     String bgImage = displayTimezone.isDay ? "day.png" : "night.png";
@@ -123,31 +119,31 @@ class _HomeState extends State<Home> {
 
                 const SizedBox(height: 110),
 
-                // Edit location button, launching choose_location
-                TextButton.icon(
-                  onPressed: () async {
-                    if (mounted) {
-                      // Open choose_location screen, sending timezones, and wait for reponse
-                      dynamic result = await Navigator.pushNamed(context, "/location");
-
-                      // If timezone selected, change home screen timezone
-                      if (result != null){
-                        setState(() {
-                          displayTimezone = result["instance"];
-                        });
-                      }
-                    }
-                  }, 
-                  icon: const Icon(Icons.edit_location), 
-                  label: const Text("Edit location"),
-                  style: TextButton.styleFrom(foregroundColor: Colors.grey[300]),
-                ),
-                const SizedBox(height: 20),
-
-                // Timezone name + time
+                // Centered column
                 Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Edit location button, launching choose_location
+                    TextButton.icon(
+                      onPressed: () async {
+                        if (mounted) {
+                          // Open choose_location screen, sending timezones, and wait for reponse
+                          dynamic result = await Navigator.pushNamed(context, "/location");
+
+                          // If timezone selected, change home screen timezone
+                          if (result != null){
+                            displayTimezone = result["instance"];
+                            _update();
+                          }
+                        }
+                      }, 
+                      icon: const Icon(Icons.edit_location), 
+                      label: const Text("Edit location"),
+                      style: TextButton.styleFrom(foregroundColor: Colors.grey[300]),
+                    ),
+                    const SizedBox(height: 20),
+                    
+                    // Timezone name + time
                     Text(
                       displayTimezone.timezone, 
                       style: const TextStyle(
