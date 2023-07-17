@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:world_time/services/world_time.dart';
 import 'package:world_time/services/all_locations.dart';
 import 'package:world_time/services/helper_widgets.dart';
+import 'package:world_time/main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,10 +20,12 @@ class _HomeState extends State<Home> {
   bool loading = true;
   String time = "";
   bool is24Hour = false;
+  late final SharedPreferences prefs;
 
   @override
   void initState() {
     super.initState();
+    getPrefs();
     setupLocalTime();
     Fluttertoast.showToast(
         msg: "Tap the time to change to 24 hour format, and vice versa",
@@ -59,6 +63,20 @@ class _HomeState extends State<Home> {
         }
         displayTimezone.isDay = (dateTime.hour > 6 && dateTime.hour < 20) ? true : false;
       });
+    }
+    await prefs.setBool('is24Hour', is24Hour);
+  }
+
+  void getPrefs() async {
+    prefs = await SharedPreferences.getInstance();
+    final bool? is24HourLocal = prefs.getBool('is24Hour');
+    final String? theme = prefs.getString('theme');
+
+    if (is24HourLocal != null) {
+      is24Hour = is24HourLocal;
+    }
+    if (theme != null && mounted) {
+      MyApp.of(context).changeThemeString(theme);
     }
   }
 

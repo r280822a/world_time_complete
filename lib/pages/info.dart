@@ -41,17 +41,7 @@ class _InfoState extends State<Info> {
       onChanged: (value){
         setState(() {
           theme = title;
-          switch (title) {
-            case "Light": 
-              MyApp.of(context).changeTheme(ThemeMode.light);
-              break;
-            case "Dark": 
-              MyApp.of(context).changeTheme(ThemeMode.dark);
-              break;
-            case "System Default": 
-              MyApp.of(context).changeTheme(ThemeMode.system);
-              break;
-          }
+          MyApp.of(context).changeThemeString(title);
           Navigator.pop(context);
         });
       },
@@ -65,7 +55,7 @@ class _InfoState extends State<Info> {
   @override
   void initState() {
     super.initState();
-    theme = MyApp.of(context).getTheme(); // Get currently selected theme
+    theme = MyApp.of(context).getThemeString(); // Get currently selected theme
   }
 
 

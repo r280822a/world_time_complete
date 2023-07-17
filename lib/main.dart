@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:world_time/pages/home.dart';
 import 'package:world_time/pages/choose_location.dart';
 import 'package:world_time/pages/info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,13 +39,30 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  void changeTheme(ThemeMode themeMode) {
+  void changeThemeString(String themeString) async {
     // Change theme from any context using "of" accessor
+    
+    ThemeMode themeMode = _themeMode;
+    switch (themeString) {
+      case "Light": 
+        themeMode = ThemeMode.light;
+        break;
+      case "Dark": 
+        themeMode = ThemeMode.dark;
+        break;
+      case "System Default": 
+        themeMode = ThemeMode.system;
+        break;
+    }
+
     setState(() {
       _themeMode = themeMode;
     });
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('theme', getThemeString());
   }
-  String getTheme() {
+  String getThemeString() {
     // Return string based on _themeMode
     switch (_themeMode) {
       case ThemeMode.light:
