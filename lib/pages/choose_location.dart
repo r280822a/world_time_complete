@@ -18,8 +18,6 @@ class _ChooseLocationState extends State<ChooseLocation> {
     if (mounted) {
       Navigator.pop(context, {
         "instance": instance,
-        "timezone": instance.timezone,
-        "isDay": instance.isDay,
       });
     }
   }

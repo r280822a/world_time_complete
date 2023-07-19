@@ -76,9 +76,10 @@ class _InfoState extends State<Info> {
             Stack(
               alignment: Alignment.center,
               children: [
-                const CircleAvatar(
-                  radius: 55,
-                  backgroundColor: Colors.blue,
+                const Icon(
+                  Icons.circle,
+                  color: Colors.blue,
+                  size: 140,
                 ),
                 const Icon(
                   Icons.public,
