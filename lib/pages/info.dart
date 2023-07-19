@@ -107,7 +107,7 @@ class _InfoState extends State<Info> {
                 style: TextStyle(fontSize: 25),
               ),
               subtitle: Text(
-                "v2.1.0",
+                "v2.1.1",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall,
               ),
