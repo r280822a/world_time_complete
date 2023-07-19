@@ -1,10 +1,10 @@
 # World Time App, Completed
 
 <p align='center'>
-<img src='https://github.com/r280822a/world_time_complete/assets/137796180/65eab2de-d3f4-4e81-8226-191da4e46b59.png' width='200'>
+<img src='https://github.com/r280822a/world_time_complete/assets/137796180/a6884227-3d55-4de7-8609-575b106b6c97' width='200'>
 </p>
 
-Forked from The Net Ninja's Flutter Beginners GitHub repo. 
+Forked from The Net Ninja's Flutter Beginners GitHub repo (linked below). 
 
 The goal of this app is to complete the world time app that The Net Ninja made at the end of his playlist. By complete I mean adding all countries and their flags, as well as improving the user experience. <br/>
 ### APIs
