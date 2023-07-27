@@ -73,7 +73,7 @@ Future<WorldTime> getLocalTimeZone() async {
 }
 
 Map<String, List<WorldTime>> getAllContinentsMap(List<WorldTime> allTimezones) {
-  // Returns map with continents and timezones in each continent
+  // Returns map of continents their timezones
   Map<String, List<WorldTime>> allContinents = {};
 
   // Form a key for each continent in allTimezones
