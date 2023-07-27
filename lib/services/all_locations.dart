@@ -19,12 +19,12 @@ Future<List<WorldTime>> getAllTimezones(BuildContext context) async {
 
   try {
     // Make request to API, get data
-    Response response = await get(Uri.parse("https://api.timezonedb.com/v2.1/list-time-zone?key=***REMOVED***&format=json"));
+    Response response = await get(Uri.parse("https://api.timezonedb.com/v2.1/list-time-zone?key=$APIKEY&format=json"));
     Map data = jsonDecode(response.body);
 
     // Get local date time
     String localTimezoneName = await FlutterTimezone.getLocalTimezone();
-    Response localResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=***REMOVED***&format=json&by=zone&zone=$localTimezoneName"));
+    Response localResponse = await get(Uri.parse("http://api.timezonedb.com/v2.1/get-time-zone?key=$APIKEY&format=json&by=zone&zone=$localTimezoneName"));
     Map localData = jsonDecode(localResponse.body);
     int localTimestamp = localData["timestamp"];
 
